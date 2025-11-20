@@ -1,30 +1,41 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProyectoFinal.Models;
 
 namespace ProyectoFinal.Data
 {
-    public class ApplicationDbContext : DbContext
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options) { }
+	public class ApplicationDbContext : DbContext
+	{
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+			: base(options) { }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Ticket> Tickets { get; set; }
+		public DbSet<User> Users { get; set; }
+		public DbSet<Event> Events { get; set; }
+		public DbSet<Ticket> Tickets { get; set; }
+		public DbSet<Sector> Sectors { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.User)
-                .WithMany()
-                .HasForeignKey(t => t.UserId);
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Ticket>()
-                .HasOne(t => t.Event)
-                .WithMany(e => e.Tickets)
-                .HasForeignKey(t => t.EventId);
-        }
-    }
+
+			modelBuilder.Entity<Ticket>()
+				.HasOne(t => t.User)
+				.WithMany()
+				.HasForeignKey(t => t.UserId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+
+			modelBuilder.Entity<Ticket>()
+				.HasOne(t => t.Event)
+				.WithMany(e => e.Tickets)
+				.HasForeignKey(t => t.EventId)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Ticket>()
+				.HasOne(t => t.Sector)
+				.WithMany()
+				.HasForeignKey(t => t.SectorId)
+				.OnDelete(DeleteBehavior.Restrict);
+		}
+	}
 }

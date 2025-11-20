@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\daer\\ProyectoFinal\\ProyectoFinal.csproj": {}
+    "D:\\daer\\TicketHub\\ProyectoFinal.csproj": {}
   },
   "projects": {
-    "D:\\daer\\ProyectoFinal\\ProyectoFinal.csproj": {
+    "D:\\daer\\TicketHub\\ProyectoFinal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\daer\\ProyectoFinal\\ProyectoFinal.csproj",
+        "projectUniqueName": "D:\\daer\\TicketHub\\ProyectoFinal.csproj",
         "projectName": "ProyectoFinal",
-        "projectPath": "D:\\daer\\ProyectoFinal\\ProyectoFinal.csproj",
+        "projectPath": "D:\\daer\\TicketHub\\ProyectoFinal.csproj",
         "packagesPath": "C:\\Users\\usuariocc\\.nuget\\packages\\",
-        "outputPath": "D:\\daer\\ProyectoFinal\\obj\\",
+        "outputPath": "D:\\daer\\TicketHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\usuariocc\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -45,6 +45,22 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.10, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
