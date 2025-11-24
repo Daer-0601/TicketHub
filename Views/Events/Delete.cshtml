@@ -1,0 +1,44 @@
+﻿@model ProyectoFinal.Models.Event
+@{
+    ViewData["Title"] = "Eliminar Evento";
+}
+
+<h1>Eliminar Evento</h1>
+
+<div class="card mb-3">
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" class="card-img-top" style="height:200px; object-fit:cover;" />
+    }
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">
+            <strong>Fecha:</strong> @Model.Date.ToString("yyyy-MM-dd") <br />
+            <strong>Hora:</strong> @Model.Time.ToString(@"hh\:mm") <br />
+            <strong>Ubicación:</strong> @Model.Location
+        </p>
+        <p>
+            <strong>Sectores:</strong>
+            @if (Model.Sectors != null && Model.Sectors.Any())
+            {
+                <ul>
+                    @foreach (var s in Model.Sectors)
+                    {
+                        <li>@s.Name - $@s.Price - Capacidad: @s.Capacity</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <span>No hay sectores</span>
+            }
+        </p>
+    </div>
+</div>
+
+<form asp-action="Delete" method="post"
+      onsubmit="return confirm('¿Estás seguro que deseas eliminar este evento?');">
+    <input type="hidden" asp-for="EventId" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

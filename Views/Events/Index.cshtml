@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ProyectoFinal.Models.Event>
+@{
+    ViewData["Title"] = "Eventos";
+}
+
+<h1>Eventos</h1>
+
+<p>
+    <a class="btn btn-success" asp-action="Create">Crear Nuevo Evento</a>
+</p>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100">
+                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                {
+                    <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" style="height:200px; object-fit:cover;">
+                }
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">
+                        <strong>Fecha:</strong> @item.Date.ToString("yyyy-MM-dd") <br />
+                        <strong>Hora:</strong> @item.Time.ToString(@"hh\:mm") <br />
+                        <strong>Ubicación:</strong> @item.Location
+                    </p>
+                    <p>
+                        <strong>Sectores:</strong>
+                        @if (item.Sectors != null && item.Sectors.Any())
+                        {
+                            <ul class="mb-0">
+                                @foreach (var s in item.Sectors)
+                                {
+                                    <li>@s.Name - $@s.Price - Capacidad: @s.Capacity</li>
+                                }
+                            </ul>
+                        }
+                        else
+                        {
+                            <span>No hay sectores</span>
+                        }
+                    </p>
+                </div>
+                <div class="card-footer text-center">
+                    <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-info btn-sm">Detalles</a>
+                    <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

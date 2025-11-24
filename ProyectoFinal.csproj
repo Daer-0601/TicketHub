@@ -7,18 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Clients\**" />
+    <Compile Remove="Views\Workers\**" />
+    <Content Remove="Views\Clients\**" />
+    <Content Remove="Views\Workers\**" />
+    <EmbeddedResource Remove="Views\Clients\**" />
+    <EmbeddedResource Remove="Views\Workers\**" />
+    <None Remove="Views\Clients\**" />
+    <None Remove="Views\Workers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\Clients\" />
-    <Folder Include="Views\Events\" />
-    <Folder Include="Views\Workers\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
