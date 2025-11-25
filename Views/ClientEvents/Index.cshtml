@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ProyectoFinal.Models.Event>
+
+<h2 class="text-center mb-4">Eventos Disponibles</h2>
+
+<div class="row">
+    @foreach (var e in Model)
+    {
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="@e.ImageUrl" class="card-img-top" style="height:200px;object-fit:cover;">
+                <div class="card-body">
+                    <h5>@e.Name</h5>
+                    <p>@e.Date.ToString("dd/MM/yyyy") - @e.Time</p>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@e.EventId">Ver más</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
