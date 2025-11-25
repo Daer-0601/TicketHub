@@ -1,0 +1,95 @@
+﻿@model ProyectoFinal.Models.User
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro - Sistema de Tickets</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="bi bi-person-plus"></i>
+                <h2>Crear Cuenta</h2>
+                <small>Registro de nuevo usuario</small>
+            </div>
+
+            <div class="login-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-group">
+                        <label asp-for="UserName" class="form-label">Nombre de Usuario *</label>
+                        <input type="text" class="form-control" asp-for="UserName" placeholder="Ingrese su usuario" required>
+                        <span asp-validation-for="UserName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Email" class="form-label">Correo Electrónico *</label>
+                        <input type="email" class="form-control" asp-for="Email" placeholder="ejemplo@correo.com" required>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Password" class="form-label">Contraseña *</label>
+                        <input type="password" class="form-control" asp-for="Password" placeholder="Mínimo 8 caracteres" required>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                        <small class="form-text text-muted">
+                            La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword" class="form-label">Confirmar Contraseña *</label>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                               placeholder="Repita la contraseña" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-login">Registrarse</button>
+                </form>
+
+                <div class="login-links">
+                    <span>¿Ya tiene una cuenta? <a href="@Url.Action("Index")">Iniciar Sesión</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Validación de confirmación de contraseña
+            $('form').submit(function (e) {
+                var password = $('#Password').val();
+                var confirmPassword = $('#confirmPassword').val();
+
+                if (password !== confirmPassword) {
+                    e.preventDefault();
+                    alert('Las contraseñas no coinciden.');
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+</body>
+</html>
