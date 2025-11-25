@@ -1,0 +1,33 @@
+﻿@model ProyectoFinal.Models.Event
+
+<h2>@Model.Name</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <img src="@Model.ImageUrl" class="img-fluid rounded">
+    </div>
+
+    <div class="col-md-6">
+        <h4>Selecciona tus tickets</h4>
+
+        <form asp-action="Buy" method="post">
+            <input type="hidden" name="eventId" value="@Model.EventId">
+
+            <div class="mb-3">
+                <label>Email donde recibirás los tickets</label>
+                <input type="email" name="email" required class="form-control" />
+            </div>
+
+            @foreach (var s in Model.Sectors)
+            {
+                <div class="card p-3 mb-2">
+                    <h5>@s.Name ($@s.Price)</h5>
+                    <label>Cantidad:</label>
+                    <input type="number" min="0" max="@s.Capacity" value="0" name="cantidades[@s.SectorId]" class="form-control" />
+                </div>
+            }
+
+            <button class="btn btn-success mt-3">Comprar</button>
+        </form>
+    </div>
+</div>
