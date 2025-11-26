@@ -14,7 +14,8 @@
           "Microsoft.EntityFrameworkCore.Tools": "9.0.10",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.7",
           "QRCoder": "1.7.0",
-          "itext7": "9.4.0"
+          "itext7": "9.4.0",
+          "itext7.bouncy-castle-adapter": "9.4.0"
         },
         "runtime": {
           "ProyectoFinal.dll": {}
@@ -52,6 +53,14 @@
           "lib/netstandard2.0/Azure.Identity.dll": {
             "assemblyVersion": "1.11.4.0",
             "fileVersion": "1.1100.424.31005"
+          }
+        }
+      },
+      "BouncyCastle.Cryptography/2.6.2": {
+        "runtime": {
+          "lib/net6.0/BouncyCastle.Cryptography.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.6.2.46322"
           }
         }
       },
@@ -669,6 +678,18 @@
           }
         }
       },
+      "itext.bouncy-castle-adapter/9.4.0": {
+        "dependencies": {
+          "BouncyCastle.Cryptography": "2.6.2",
+          "itext.commons": "9.4.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/itext.bouncy-castle-adapter.dll": {
+            "assemblyVersion": "9.4.0.0",
+            "fileVersion": "9.4.0.0"
+          }
+        }
+      },
       "itext.commons/9.4.0": {
         "dependencies": {
           "Microsoft.Extensions.Logging": "9.0.10",
@@ -684,6 +705,11 @@
       "itext7/9.4.0": {
         "dependencies": {
           "itext": "9.4.0"
+        }
+      },
+      "itext7.bouncy-castle-adapter/9.4.0": {
+        "dependencies": {
+          "itext.bouncy-castle-adapter": "9.4.0"
         }
       },
       "Microsoft.AspNetCore.Razor.Language/6.0.24": {
@@ -2603,6 +2629,13 @@
       "path": "azure.identity/1.11.4",
       "hashPath": "azure.identity.1.11.4.nupkg.sha512"
     },
+    "BouncyCastle.Cryptography/2.6.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-7oWOcvnntmMKNzDLsdxAYqApt+AjpRpP2CShjMfIa3umZ42UQMvH0tl1qAliYPNYO6vTdcGMqnRrCPmsfzTI1w==",
+      "path": "bouncycastle.cryptography/2.6.2",
+      "hashPath": "bouncycastle.cryptography.2.6.2.nupkg.sha512"
+    },
     "BouncyCastle.NetCore/1.9.0": {
       "type": "package",
       "serviceable": true,
@@ -2967,6 +3000,13 @@
       "path": "itext/9.4.0",
       "hashPath": "itext.9.4.0.nupkg.sha512"
     },
+    "itext.bouncy-castle-adapter/9.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-qDKYzPr1fyE2lsGWxpkwqH3blBSqbbdmd1ekE2N3TIkuEDZ7vX3/Nj7WozA2ydA8+27eNxDMbLoP0FLDbi6shQ==",
+      "path": "itext.bouncy-castle-adapter/9.4.0",
+      "hashPath": "itext.bouncy-castle-adapter.9.4.0.nupkg.sha512"
+    },
     "itext.commons/9.4.0": {
       "type": "package",
       "serviceable": true,
@@ -2980,6 +3020,13 @@
       "sha512": "sha512-G2pFGO+WTXZZy9hx/lrhpuBX8OQZtyboUqb+5169RtnK6ChX9hkvFwLKrDvwgL/H5Hz6A0QiXycQU6opz1WdfQ==",
       "path": "itext7/9.4.0",
       "hashPath": "itext7.9.4.0.nupkg.sha512"
+    },
+    "itext7.bouncy-castle-adapter/9.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-EPx0vzqFYWVUCSd2WSqaphHTCLuX95fAmiJGyGBr/6j5hIAwSWWqdeKKkKpvkYbKjJB/6zGuWBAQdOjfk+jZcQ==",
+      "path": "itext7.bouncy-castle-adapter/9.4.0",
+      "hashPath": "itext7.bouncy-castle-adapter.9.4.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Razor.Language/6.0.24": {
       "type": "package",

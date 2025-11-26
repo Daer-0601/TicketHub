@@ -1,0 +1,491 @@
+﻿@model IEnumerable<ProyectoFinal.Models.Event>
+@{
+    ViewData["Title"] = "Escaneo de Entradas - Worker";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">🎫 Escaneo de Entradas</h1>
+
+    <div class="row">
+        <!-- Panel de Selección -->
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Configuración de Escaneo</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="eventSelect" class="form-label">Seleccionar Evento:</label>
+                        <select id="eventSelect" class="form-select">
+                            <option value="">-- Seleccione un evento --</option>
+                            @foreach (var evento in Model)
+                            {
+                                <option value="@evento.EventId" data-name="@evento.Name">@evento.Name - @evento.Date.ToString("dd/MM/yyyy")</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sectorSelect" class="form-label">Seleccionar Sector:</label>
+                        <select id="sectorSelect" class="form-select" disabled>
+                            <option value="">-- Primero seleccione un evento --</option>
+                        </select>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <small><strong>Evento seleccionado:</strong> <span id="selectedEventName">Ninguno</span></small><br>
+                        <small><strong>Sector seleccionado:</strong> <span id="selectedSectorName">Ninguno</span></small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Escaneo -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Escanear Código QR</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Selector de modo -->
+                    <div class="btn-group w-100 mb-3" role="group">
+                        <input type="radio" class="btn-check" name="scanMode" id="cameraMode" checked>
+                        <label class="btn btn-outline-success" for="cameraMode">
+                            <i class="bi bi-camera-video"></i> Cámara
+                        </label>
+                        <input type="radio" class="btn-check" name="scanMode" id="manualMode">
+                        <label class="btn btn-outline-success" for="manualMode">
+                            <i class="bi bi-keyboard"></i> Manual
+                        </label>
+                    </div>
+
+                    <!-- Modo Cámara -->
+                    <div id="cameraSection">
+                        <div id="qr-reader" style="width: 100%; margin-bottom: 15px;"></div>
+                        <div id="qr-reader-results" class="alert alert-info" style="display: none;"></div>
+                        <button id="stopCameraBtn" class="btn btn-danger w-100" style="display: none;">
+                            <i class="bi bi-camera-video-off"></i> Detener Cámara
+                        </button>
+                    </div>
+
+                    <!-- Modo Manual -->
+                    <div id="manualSection" style="display: none;">
+                        <div class="mb-3">
+                            <label for="qrInput" class="form-label">Código QR:</label>
+                            <input type="text" id="qrInput" class="form-control form-control-lg" placeholder="Ingresa el código QR">
+                            <small class="form-text text-muted">Formato: EventId-TicketId (ej: 1-123)</small>
+                        </div>
+                        <button id="scanButton" class="btn btn-success w-100" disabled>
+                            <i class="bi bi-qr-code-scan"></i> Escanear Entrada
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel de Resultados -->
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Resultado del Escaneo</h5>
+                </div>
+                <div class="card-body">
+                    <div id="resultArea" class="text-center py-5">
+                        <i class="bi bi-qr-code" style="font-size: 4rem; color: #ccc;"></i>
+                        <p class="text-muted mt-3">Esperando escaneo...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Historial de Escaneos (opcional) -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Últimos Escaneos</h5>
+                </div>
+                <div class="card-body">
+                    <div id="scanHistory" class="list-group">
+                        <p class="text-muted text-center">No hay escaneos recientes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <script>
+        let scanHistory = [];
+        let html5QrCode = null;
+        let isScanning = false;
+
+        // Cambiar entre modo cámara y manual
+        $('input[name="scanMode"]').on('change', function() {
+            const isCameraMode = $('#cameraMode').is(':checked');
+            $('#cameraSection').toggle(isCameraMode);
+            $('#manualSection').toggle(!isCameraMode);
+            
+            if (isCameraMode) {
+                startCameraScanner();
+            } else {
+                stopCameraScanner();
+            }
+        });
+
+        // Inicializar escáner de cámara
+        function startCameraScanner() {
+            if (isScanning) return;
+            
+            const eventId = $('#eventSelect').val();
+            const sectorId = $('#sectorSelect').val();
+            
+            if (!eventId || !sectorId) {
+                $('#qr-reader-results').html('<div class="alert alert-warning">Por favor seleccione un evento y sector primero</div>').show();
+                return;
+            }
+
+            html5QrCode = new Html5Qrcode("qr-reader");
+            isScanning = true;
+            $('#stopCameraBtn').show();
+
+            html5QrCode.start(
+                { facingMode: "environment" }, // Usar cámara trasera si está disponible
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 }
+                },
+                (decodedText, decodedResult) => {
+                    // Código QR escaneado exitosamente
+                    handleScannedCode(decodedText);
+                },
+                (errorMessage) => {
+                    // Ignorar errores de escaneo continuo
+                }
+            ).catch((err) => {
+                console.error("Error al iniciar la cámara:", err);
+                $('#qr-reader-results').html(
+                    '<div class="alert alert-danger">' +
+                    'Error al acceder a la cámara. Asegúrese de dar permisos de cámara o use el modo manual.' +
+                    '</div>'
+                ).show();
+                isScanning = false;
+                $('#stopCameraBtn').hide();
+            });
+        }
+
+        function stopCameraScanner() {
+            if (html5QrCode && isScanning) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                    isScanning = false;
+                    $('#stopCameraBtn').hide();
+                    $('#qr-reader-results').hide();
+                }).catch((err) => {
+                    console.error("Error al detener la cámara:", err);
+                });
+            }
+        }
+
+        $('#stopCameraBtn').on('click', function() {
+            stopCameraScanner();
+            $('#cameraMode').prop('checked', false);
+            $('#manualMode').prop('checked', true);
+            $('#cameraSection').hide();
+            $('#manualSection').show();
+        });
+
+        // Manejar código escaneado
+        function handleScannedCode(qrCode) {
+            if (!isScanning) return; // Prevenir múltiples escaneos
+            
+            const eventId = $('#eventSelect').val();
+            const sectorId = $('#sectorSelect').val();
+            
+            if (!eventId || !sectorId) {
+                $('#qr-reader-results').html('<div class="alert alert-warning">Por favor seleccione un evento y sector primero</div>').show();
+                return;
+            }
+
+            // Detener temporalmente el escáner mientras se procesa
+            stopCameraScanner();
+            
+            // Procesar el escaneo
+            processScan(qrCode, eventId, sectorId);
+        }
+
+        // Cargar sectores cuando se selecciona un evento
+        $('#eventSelect').on('change', function() {
+            // Detener cámara si está activa
+            if (isScanning) {
+                stopCameraScanner();
+            }
+            const eventId = $(this).val();
+            const eventName = $(this).find('option:selected').data('name') || 'Ninguno';
+            
+            $('#selectedEventName').text(eventName);
+            $('#sectorSelect').prop('disabled', !eventId).html('<option value="">Cargando...</option>');
+
+            if (eventId) {
+                $.get('/Workers/GetSectors', { eventId: eventId }, function(sectors) {
+                    let options = '<option value="">-- Seleccione un sector --</option>';
+                    sectors.forEach(function(sector) {
+                        options += `<option value="${sector.sectorId}">${sector.name}</option>`;
+                    });
+                    $('#sectorSelect').html(options);
+                });
+            } else {
+                $('#sectorSelect').html('<option value="">-- Primero seleccione un evento --</option>');
+                $('#selectedSectorName').text('Ninguno');
+            }
+        });
+
+        // Actualizar nombre del sector seleccionado
+        $('#sectorSelect').on('change', function() {
+            const sectorName = $(this).find('option:selected').text();
+            $('#selectedSectorName').text(sectorName === '-- Seleccione un sector --' ? 'Ninguno' : sectorName);
+            updateScanButton();
+            
+            // Reiniciar cámara si está en modo cámara y ya había seleccionado evento/sector
+            if ($('#cameraMode').is(':checked') && $('#eventSelect').val() && $(this).val()) {
+                if (!isScanning) {
+                    startCameraScanner();
+                }
+            }
+        });
+
+        // Habilitar/deshabilitar botón de escaneo
+        function updateScanButton() {
+            const hasEvent = $('#eventSelect').val();
+            const hasSector = $('#sectorSelect').val();
+            const hasQr = $('#qrInput').val().trim();
+            $('#scanButton').prop('disabled', !hasEvent || !hasSector || !hasQr);
+        }
+
+        $('#qrInput').on('input', updateScanButton);
+        $('#eventSelect, #sectorSelect').on('change', updateScanButton);
+
+        // Permitir escanear con Enter
+        $('#qrInput').on('keypress', function(e) {
+            if (e.which === 13 && !$('#scanButton').prop('disabled')) {
+                const qrCode = $('#qrInput').val().trim();
+                const eventId = $('#eventSelect').val();
+                const sectorId = $('#sectorSelect').val();
+                processScan(qrCode, eventId, sectorId);
+            }
+        });
+
+        // Función de escaneo manual
+        $('#scanButton').on('click', function() {
+            const qrCode = $('#qrInput').val().trim();
+            const eventId = $('#eventSelect').val();
+            const sectorId = $('#sectorSelect').val();
+            
+            if (!qrCode || !eventId || !sectorId) {
+                showResult('error', 'Por favor complete todos los campos');
+                return;
+            }
+            
+            processScan(qrCode, eventId, sectorId);
+        });
+
+        // Función común para procesar escaneos
+        function processScan(qrCode, eventId, sectorId) {
+            if (!qrCode || !eventId || !sectorId) {
+                showResult('error', 'Por favor complete todos los campos');
+                return;
+            }
+
+            // Deshabilitar botón durante el escaneo (si está en modo manual)
+            const scanButton = $('#scanButton');
+            const wasEnabled = !scanButton.prop('disabled');
+            if (wasEnabled) {
+                scanButton.prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Escaneando...');
+            }
+
+            $.ajax({
+                url: '/Workers/Scan',
+                method: 'POST',
+                data: {
+                    qrCode: qrCode,
+                    eventId: eventId,
+                    sectorId: sectorId
+                },
+                success: function(response) {
+                    showResult(response.status, response.message, response.ticketInfo);
+                    addToHistory(response);
+                    
+                    // Limpiar input si está en modo manual
+                    if ($('#manualMode').is(':checked')) {
+                        $('#qrInput').val('').focus();
+                    }
+                    
+                    // Reiniciar cámara después de un breve delay si está en modo cámara
+                    if ($('#cameraMode').is(':checked')) {
+                        setTimeout(() => {
+                            if ($('#eventSelect').val() && $('#sectorSelect').val()) {
+                                startCameraScanner();
+                            }
+                        }, 2000); // Esperar 2 segundos antes de reiniciar
+                    }
+                    
+                    if (wasEnabled) {
+                        updateScanButton();
+                    }
+                },
+                error: function(xhr) {
+                    const response = xhr.responseJSON || { message: 'Error al procesar la solicitud', status: 'error' };
+                    showResult(response.status, response.message, response.ticketInfo);
+                    
+                    // Reiniciar cámara si está en modo cámara
+                    if ($('#cameraMode').is(':checked')) {
+                        setTimeout(() => {
+                            if ($('#eventSelect').val() && $('#sectorSelect').val()) {
+                                startCameraScanner();
+                            }
+                        }, 2000);
+                    }
+                    
+                    if (wasEnabled) {
+                        updateScanButton();
+                    }
+                }
+            });
+        }
+
+        function showResult(status, message, ticketInfo) {
+            let alertClass = 'alert-secondary';
+            let icon = 'bi-info-circle';
+            let title = 'Resultado';
+
+            switch(status) {
+                case 'valid':
+                    alertClass = 'alert-success';
+                    icon = 'bi-check-circle-fill';
+                    title = '✓ Entrada Válida';
+                    break;
+                case 'alreadyscanned':
+                    alertClass = 'alert-warning';
+                    icon = 'bi-exclamation-triangle-fill';
+                    title = '⚠ Ya Escaneada';
+                    break;
+                case 'invalid':
+                case 'notfound':
+                    alertClass = 'alert-danger';
+                    icon = 'bi-x-circle-fill';
+                    title = '✗ Entrada Inválida';
+                    break;
+                case 'wrongsector':
+                    alertClass = 'alert-warning';
+                    icon = 'bi-exclamation-triangle-fill';
+                    title = '⚠ Sector Incorrecto';
+                    break;
+                case 'wrongevent':
+                    alertClass = 'alert-danger';
+                    icon = 'bi-x-circle-fill';
+                    title = '✗ Evento Incorrecto';
+                    break;
+                default:
+                    alertClass = 'alert-danger';
+                    icon = 'bi-x-circle-fill';
+                    title = '✗ Error';
+            }
+
+            let html = `
+                <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">
+                        <i class="bi ${icon}"></i> ${title}
+                    </h4>
+                    <p class="mb-0">${message}</p>
+            `;
+
+            if (ticketInfo) {
+                html += '<hr>';
+                html += '<div class="row mt-2">';
+                if (ticketInfo.ticketId) {
+                    html += `<div class="col-md-6"><strong>Ticket ID:</strong> #${ticketInfo.ticketId}</div>`;
+                }
+                if (ticketInfo.eventName) {
+                    html += `<div class="col-md-6"><strong>Evento:</strong> ${ticketInfo.eventName}</div>`;
+                }
+                if (ticketInfo.sectorName) {
+                    html += `<div class="col-md-6"><strong>Sector:</strong> ${ticketInfo.sectorName}</div>`;
+                }
+                if (ticketInfo.price) {
+                    html += `<div class="col-md-6"><strong>Precio:</strong> $${ticketInfo.price.toFixed(2)}</div>`;
+                }
+                if (ticketInfo.scannedAt) {
+                    const scannedDate = new Date(ticketInfo.scannedAt);
+                    html += `<div class="col-md-12 mt-2"><strong>Escaneado:</strong> ${scannedDate.toLocaleString('es-ES')}</div>`;
+                }
+                html += '</div>';
+            }
+
+            html += `
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+
+            $('#resultArea').html(html);
+        }
+
+        function addToHistory(response) {
+            const historyItem = {
+                timestamp: new Date(),
+                status: response.status,
+                message: response.message,
+                ticketInfo: response.ticketInfo || {}
+            };
+
+            scanHistory.unshift(historyItem);
+            if (scanHistory.length > 10) {
+                scanHistory.pop();
+            }
+
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            if (scanHistory.length === 0) {
+                $('#scanHistory').html('<p class="text-muted text-center">No hay escaneos recientes</p>');
+                return;
+            }
+
+            let html = '';
+            scanHistory.forEach(function(item) {
+                let badgeClass = 'bg-secondary';
+                let icon = 'bi-circle';
+
+                switch(item.status) {
+                    case 'valid':
+                        badgeClass = 'bg-success';
+                        icon = 'bi-check-circle';
+                        break;
+                    case 'alreadyscanned':
+                    case 'wrongsector':
+                        badgeClass = 'bg-warning';
+                        icon = 'bi-exclamation-triangle';
+                        break;
+                    case 'invalid':
+                    case 'notfound':
+                    case 'wrongevent':
+                        badgeClass = 'bg-danger';
+                        icon = 'bi-x-circle';
+                        break;
+                }
+
+                html += `
+                    <div class="list-group-item">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h6 class="mb-1">
+                                <span class="badge ${badgeClass} me-2"><i class="bi ${icon}"></i></span>
+                                ${item.message}
+                            </h6>
+                            <small>${item.timestamp.toLocaleTimeString('es-ES')}</small>
+                        </div>
+                        ${item.ticketInfo.ticketId ? `<small class="text-muted">Ticket #${item.ticketInfo.ticketId}</small>` : ''}
+                    </div>
+                `;
+            });
+
+            $('#scanHistory').html(html);
+        }
+    </script>
+}

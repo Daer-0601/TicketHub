@@ -24,28 +24,28 @@ namespace ProyectoFinal.Controllers
             {
                 return RedirectToDashboard();
             }
-            return View();
+            return View(new LoginViewModel());
         }
 
         // POST: /Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(User loginUser)
+        public async Task<IActionResult> Index(LoginViewModel loginViewModel)
         {
             if (!ModelState.IsValid)
             {
-                return View(loginUser);
+                return View(loginViewModel);
             }
 
             try
             {
                 var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.UserName == loginUser.UserName && u.Password == loginUser.Password);
+                    .FirstOrDefaultAsync(u => u.UserName == loginViewModel.UserName && u.Password == loginViewModel.Password);
 
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos.");
-                    return View(loginUser);
+                    return View(loginViewModel);
                 }
 
                 // Crear claims identity
@@ -82,7 +82,7 @@ namespace ProyectoFinal.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError(string.Empty, "Error al iniciar sesión. Intente nuevamente.");
-                return View(loginUser);
+                return View(loginViewModel);
             }
         }
 
@@ -293,9 +293,9 @@ namespace ProyectoFinal.Controllers
 
             return role switch
             {
-                "Admin" => RedirectToAction("Index", "Admin"),
-                "Worker" => RedirectToAction("Index", "Worker"),
-                "Client" => RedirectToAction("Index", "Client"),
+                "Admin" => RedirectToAction("Index", "Events"),
+                "Worker" => RedirectToAction("Index", "Workers"),
+                "Client" => RedirectToAction("Index", "ClientEvents"),
                 _ => RedirectToAction("Index", "Home")
             };
         }

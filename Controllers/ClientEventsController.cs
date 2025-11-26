@@ -9,6 +9,12 @@ using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
 using iText.IO.Image;
+using iText.Kernel.Colors;
+using iText.Layout.Properties;
+using iText.Kernel.Geom;
+using iText.Kernel.Font;
+using iText.IO.Font.Constants;
+using iText.Layout.Borders;
 using System.IO;
 using System.Collections.Generic;
 
@@ -91,6 +97,7 @@ namespace ProyectoFinal.Controllers
 
                     // Generar QR
                     ticket.QrCode = GenerarQR($"{evento.EventId}-{ticket.TicketId}");
+                    ticket.Sector = sector; // Asignar el sector para el PDF
 
                     nuevosTickets.Add(ticket);
                 }
@@ -135,40 +142,170 @@ namespace ProyectoFinal.Controllers
         {
             using MemoryStream ms = new MemoryStream();
 
-            // PdfWriter y PdfDocument sin SmartMode (opción no disponible en C#)
             PdfWriter writer = new PdfWriter(ms);
             PdfDocument pdf = new PdfDocument(writer);
-            Document document = new Document(pdf);
+            Document document = new Document(pdf, PageSize.A4);
+            document.SetMargins(40, 40, 40, 40);
 
-            // Información del evento
-            document.Add(new Paragraph($"Evento: {evento.Name}").SetFontSize(16));
-            document.Add(new Paragraph($"Fecha: {evento.Date:yyyy-MM-dd}"));
-            document.Add(new Paragraph($"Hora: {evento.Time:hh\\:mm}"));
-            document.Add(new Paragraph($"Ubicación: {evento.Location}"));
-            document.Add(new Paragraph(" "));
+            // Colores
+            Color headerColor = new DeviceRgb(41, 128, 185); // Azul
+            Color borderColor = new DeviceRgb(200, 200, 200); // Gris claro
+            Color textColor = new DeviceRgb(44, 62, 80); // Gris oscuro
+            Color successColor = new DeviceRgb(39, 174, 96); // Verde
 
+            // Fuente base
+            PdfFont baseFont = PdfFontFactory.CreateFont(StandardFontFamilies.HELVETICA);
+
+            // Encabezado del documento
+            Paragraph header = new Paragraph("ENTRADAS")
+                .SetFont(baseFont)
+                .SetFontSize(26)
+                .SetTextAlignment(TextAlignment.CENTER)
+                .SetFontColor(headerColor)
+                .SetMarginBottom(20);
+            document.Add(header);
+
+            // Información del evento en una caja con borde
+            Div eventInfoBox = new Div()
+                .SetBackgroundColor(new DeviceRgb(245, 245, 245))
+                .SetBorder(new SolidBorder(borderColor, 2))
+                .SetPadding(15)
+                .SetMarginBottom(25);
+
+            Paragraph eventTitle = new Paragraph(evento.Name)
+                .SetFont(baseFont)
+                .SetFontSize(22)
+                .SetFontColor(headerColor)
+                .SetTextAlignment(TextAlignment.CENTER)
+                .SetMarginBottom(10);
+            eventInfoBox.Add(eventTitle);
+
+            Table eventTable = new Table(2).UseAllAvailableWidth();
+            eventTable.SetMarginBottom(10);
+
+            // Fecha
+            Cell dateLabel = new Cell().Add(new Paragraph("Fecha:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+            Cell dateValue = new Cell().Add(new Paragraph(evento.Date.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))).SetFont(baseFont));
+            eventTable.AddCell(dateLabel);
+            eventTable.AddCell(dateValue);
+
+            // Hora
+            Cell timeLabel = new Cell().Add(new Paragraph("Hora:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+            Cell timeValue = new Cell().Add(new Paragraph(evento.Time.ToString(@"hh\:mm")).SetFont(baseFont));
+            eventTable.AddCell(timeLabel);
+            eventTable.AddCell(timeValue);
+
+            // Ubicación
+            Cell locationLabel = new Cell().Add(new Paragraph("Ubicacion:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+            Cell locationValue = new Cell().Add(new Paragraph(evento.Location).SetFont(baseFont));
+            eventTable.AddCell(locationLabel);
+            eventTable.AddCell(locationValue);
+
+            eventInfoBox.Add(eventTable);
+            document.Add(eventInfoBox);
+
+            // Generar cada entrada
+            int ticketNumber = 1;
             foreach (var ticket in tickets)
             {
-                document.Add(new Paragraph($"Ticket ID: {ticket.TicketId}"));
-                document.Add(new Paragraph($"Sector: {ticket.Sector?.Name ?? "N/A"}"));
-                document.Add(new Paragraph($"Precio: ${ticket.Price}"));
+                // Caja para cada entrada con borde
+                Div ticketBox = new Div()
+                    .SetBorder(new SolidBorder(headerColor, 3))
+                    .SetPadding(20)
+                    .SetMarginBottom(25)
+                    .SetBackgroundColor(new DeviceRgb(255, 255, 255));
 
-                // Insertar imagen QR
+                // Título de la entrada
+                Paragraph ticketTitle = new Paragraph($"ENTRADA #{ticketNumber}")
+                    .SetFont(baseFont)
+                    .SetFontSize(20)
+                    .SetFontColor(headerColor)
+                    .SetTextAlignment(TextAlignment.CENTER)
+                    .SetMarginBottom(15);
+                ticketBox.Add(ticketTitle);
+
+                // Tabla con información del ticket
+                Table ticketTable = new Table(2).UseAllAvailableWidth();
+                ticketTable.SetMarginBottom(15);
+
+                // Ticket ID
+                Cell idLabel = new Cell().Add(new Paragraph("Ticket ID:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+                Cell idValue = new Cell().Add(new Paragraph($"#{ticket.TicketId}").SetFont(baseFont).SetFontSize(12));
+                ticketTable.AddCell(idLabel);
+                ticketTable.AddCell(idValue);
+
+                // Sector
+                Cell sectorLabel = new Cell().Add(new Paragraph("Sector:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+                Cell sectorValue = new Cell().Add(new Paragraph(ticket.Sector?.Name ?? "N/A").SetFont(baseFont).SetFontSize(12));
+                ticketTable.AddCell(sectorLabel);
+                ticketTable.AddCell(sectorValue);
+
+                // Precio
+                Cell priceLabel = new Cell().Add(new Paragraph("Precio:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+                string precioTexto = "$" + ticket.Price.ToString("F2");
+                Cell priceValue = new Cell().Add(new Paragraph(precioTexto).SetFont(baseFont).SetFontSize(16).SetFontColor(successColor));
+                ticketTable.AddCell(priceLabel);
+                ticketTable.AddCell(priceValue);
+
+                ticketBox.Add(ticketTable);
+
+                // Insertar imagen QR centrada
                 if (!string.IsNullOrEmpty(ticket.QrCode))
                 {
-                    string base64Data = ticket.QrCode.Replace("data:image/png;base64,", "");
-                    byte[] qrBytes = Convert.FromBase64String(base64Data);
-                    using MemoryStream qrStream = new MemoryStream(qrBytes);
-                    iText.Layout.Element.Image qrImage = new iText.Layout.Element.Image(ImageDataFactory.Create(qrStream))
-                        .SetWidth(100)
-                        .SetHeight(100);
-                    document.Add(qrImage);
+                    try
+                    {
+                        string base64Data = ticket.QrCode.Replace("data:image/png;base64,", "");
+                        byte[] qrBytes = Convert.FromBase64String(base64Data);
+                        
+                        ImageData imageData = ImageDataFactory.Create(qrBytes);
+                        Image qrImage = new Image(imageData);
+                        
+                        // Tamaño del QR más grande y centrado
+                        qrImage.SetWidth(150);
+                        qrImage.SetHeight(150);
+                        qrImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
+                        qrImage.SetMarginTop(10);
+                        qrImage.SetMarginBottom(10);
+                        
+                        ticketBox.Add(qrImage);
+
+                        // Texto debajo del QR
+                        Paragraph qrText = new Paragraph("Escanea este codigo QR para validar tu entrada")
+                            .SetFont(baseFont)
+                            .SetFontSize(9)
+                            .SetFontColor(new DeviceRgb(150, 150, 150))
+                            .SetTextAlignment(TextAlignment.CENTER)
+                            .SetMarginTop(5);
+                        ticketBox.Add(qrText);
+                    }
+                    catch (Exception ex)
+                    {
+                        Paragraph errorText = new Paragraph($"Error al generar QR: {ex.Message}")
+                            .SetFontColor(ColorConstants.RED)
+                            .SetFontSize(10);
+                        ticketBox.Add(errorText);
+                    }
                 }
 
-                // Separación entre tickets
-                document.Add(new LineSeparator(new iText.Layout.Borders.SolidBorder(1)));
-                document.Add(new Paragraph(" "));
+                // Línea decorativa al final
+                Div separator = new Div()
+                    .SetHeight(2)
+                    .SetBackgroundColor(headerColor)
+                    .SetMarginTop(15);
+                ticketBox.Add(separator);
+
+                document.Add(ticketBox);
+                ticketNumber++;
             }
+
+            // Pie de página
+            Paragraph footer = new Paragraph("Gracias por tu compra. Presenta este documento al ingresar al evento.")
+                .SetFont(baseFont)
+                .SetFontSize(10)
+                .SetFontColor(new DeviceRgb(150, 150, 150))
+                .SetTextAlignment(TextAlignment.CENTER)
+                .SetMarginTop(20);
+            document.Add(footer);
 
             document.Close();
             return ms.ToArray();
