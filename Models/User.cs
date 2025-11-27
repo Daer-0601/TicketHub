@@ -29,5 +29,7 @@ namespace ProyectoFinal.Models
 
         [RegularExpression("^(Admin|Client|Worker)$", ErrorMessage = "Role must be Admin, Client, or Worker.")]
         public string Role { get; set; } = string.Empty;
+
+        public bool MustChangePassword { get; set; } = false;
     }
 }

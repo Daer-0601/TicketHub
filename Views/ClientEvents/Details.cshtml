@@ -1,4 +1,7 @@
 ﻿@model ProyectoFinal.Models.Event
+@{
+    var disponibilidad = ViewBag.Disponibilidad as Dictionary<int, int> ?? new Dictionary<int, int>();
+}
 
 <h2>@Model.Name</h2>
 
@@ -10,6 +13,14 @@
     <div class="col-md-6">
         <h4>Selecciona tus tickets</h4>
 
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ErrorMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
         <form asp-action="Buy" method="post">
             <input type="hidden" name="eventId" value="@Model.EventId">
 
@@ -20,10 +31,29 @@
 
             @foreach (var s in Model.Sectors)
             {
-                <div class="card p-3 mb-2">
-                    <h5>@s.Name ($@s.Price)</h5>
-                    <label>Cantidad:</label>
-                    <input type="number" min="0" max="@s.Capacity" value="0" name="cantidades[@s.SectorId]" class="form-control" />
+                int entradasDisponibles = disponibilidad.ContainsKey(s.SectorId) ? disponibilidad[s.SectorId] : s.Capacity;
+                bool agotado = entradasDisponibles <= 0;
+
+                <div class="card p-3 mb-2 @(agotado ? "bg-light" : "")">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">@s.Name ($@s.Price)</h5>
+                        @if (agotado)
+                        {
+                            <span class="badge bg-danger">AGOTADO</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@entradasDisponibles disponibles</span>
+                        }
+                    </div>
+                    <label class="mt-2">Cantidad:</label>
+                    <input type="number" 
+                           min="0" 
+                           max="@entradasDisponibles" 
+                           value="0" 
+                           name="cantidades[@s.SectorId]" 
+                           class="form-control" 
+                           @(agotado ? "disabled" : "") />
                 </div>
             }
 

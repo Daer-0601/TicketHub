@@ -54,6 +54,15 @@ namespace ProyectoFinal.Controllers
             if (evento == null)
                 return NotFound();
 
+            // Calcular disponibilidad por sector
+            var disponibilidad = new Dictionary<int, int>();
+            foreach (var sector in evento.Sectors)
+            {
+                int vendidos = await _context.Tickets.CountAsync(t => t.SectorId == sector.SectorId);
+                disponibilidad[sector.SectorId] = sector.Capacity - vendidos;
+            }
+            ViewBag.Disponibilidad = disponibilidad;
+
             return View(evento);
         }
 
@@ -69,6 +78,28 @@ namespace ProyectoFinal.Controllers
 
             if (evento == null)
                 return NotFound();
+
+            // Validar disponibilidad de entradas
+            foreach (var item in cantidades)
+            {
+                int sectorId = item.Key;
+                int cantidad = item.Value;
+
+                if (cantidad <= 0) continue;
+
+                var sector = await _context.Sectors.FindAsync(sectorId);
+                if (sector == null) continue;
+
+                // Contar tickets ya vendidos para este sector
+                int ticketsVendidos = await _context.Tickets.CountAsync(t => t.SectorId == sectorId);
+                int disponibles = sector.Capacity - ticketsVendidos;
+
+                if (cantidad > disponibles)
+                {
+                    TempData["ErrorMessage"] = $"No hay suficientes entradas en {sector.Name}. Disponibles: {disponibles}";
+                    return RedirectToAction("Details", new { id = eventId });
+                }
+            }
 
             List<Ticket> nuevosTickets = new();
 
@@ -89,7 +120,6 @@ namespace ProyectoFinal.Controllers
                         EventId = eventId,
                         SectorId = sectorId,
                         Price = sector.Price,
-
                     };
 
                     _context.Tickets.Add(ticket);
@@ -97,7 +127,7 @@ namespace ProyectoFinal.Controllers
 
                     // Generar QR
                     ticket.QrCode = GenerarQR($"{evento.EventId}-{ticket.TicketId}");
-                    ticket.Sector = sector; // Asignar el sector para el PDF
+                    ticket.Sector = sector;
 
                     nuevosTickets.Add(ticket);
                 }

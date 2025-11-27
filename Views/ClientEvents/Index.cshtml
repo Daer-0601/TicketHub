@@ -20,27 +20,7 @@
     </div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
-    <div class="stats-grid">
-        <div class="stat-item">
-            <div class="stat-number">@Model.Count()</div>
-            <div class="stat-label">Eventos Disponibles</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">@Model.Sum(e => e.Sectors?.Count ?? 0)</div>
-            <div class="stat-label">Sectores</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">100%</div>
-            <div class="stat-label">Compra Segura</div>
-        </div>
-        <div class="stat-item">
-            <div class="stat-number">24/7</div>
-            <div class="stat-label">Soporte</div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Events Section -->
 <section class="events-section">
@@ -71,10 +51,7 @@
                             <span class="day">@evento.Date.Day</span>
                             <span class="month">@meses[evento.Date.Month - 1]</span>
                         </div>
-                        
-                        <button class="favorite-btn" title="Agregar a favoritos">
-                            <i class="bi bi-heart"></i>
-                        </button>
+                       
                         
                         <span class="category-tag">
                             <i class="bi bi-ticket-perforated"></i> Evento
