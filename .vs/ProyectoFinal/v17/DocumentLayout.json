@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\daer\\TicketHub\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|d:\\daer\\tickethub\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|solutionrelative:controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|d:\\daer\\tickethub\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|solutionrelative:controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -75,10 +79,6 @@
       "RelativeMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|solutionrelative:views\\events\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|d:\\daer\\tickethub\\controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|solutionrelative:controllers\\eventscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|d:\\daer\\tickethub\\views\\events\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{83A61275-E3E5-4135-9B59-FA736496BC39}|ProyectoFinal.csproj|solutionrelative:views\\events\\delete.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -118,44 +118,20 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Event.cs",
-              "DocumentMoniker": "D:\\daer\\TicketHub\\Models\\Event.cs",
-              "RelativeDocumentMoniker": "Models\\Event.cs",
-              "ToolTip": "D:\\daer\\TicketHub\\Models\\Event.cs",
-              "RelativeToolTip": "Models\\Event.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAgwCEAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-11T15:35:48.39Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "Edit.cshtml",
-              "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Events\\Edit.cshtml",
-              "RelativeDocumentMoniker": "Views\\Events\\Edit.cshtml",
-              "ToolTip": "D:\\daer\\TicketHub\\Views\\Events\\Edit.cshtml",
-              "RelativeToolTip": "Views\\Events\\Edit.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-24T02:20:14.192Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Workers\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Workers\\Index.cshtml",
               "ToolTip": "D:\\daer\\TicketHub\\Views\\Workers\\Index.cshtml",
               "RelativeToolTip": "Views\\Workers\\Index.cshtml",
-              "ViewState": "AQIAAKoCAAAAAAAAAAAmwK8CAABfAAAA",
+              "ViewState": "AQIAAMQCAAAAAAAAAAAmwMkCAABfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-11-26T01:21:52.811Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Login\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Login\\Index.cshtml",
@@ -168,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -181,7 +157,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -194,7 +170,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\daer\\TicketHub\\appsettings.json",
               "RelativeDocumentMoniker": "appsettings.json",
@@ -207,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "LoginController.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "Controllers\\LoginController.cs",
@@ -232,7 +208,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
+              "Title": "EventsController.cs",
+              "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\EventsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\EventsController.cs",
+              "ToolTip": "D:\\daer\\TicketHub\\Controllers\\EventsController.cs",
+              "RelativeToolTip": "Controllers\\EventsController.cs",
+              "ViewState": "AQIAAJ4AAAAAAAAAAAAuwEQAAAA3AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-24T02:09:32.085Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Events\\Edit.cshtml",
+              "RelativeDocumentMoniker": "Views\\Events\\Edit.cshtml",
+              "ToolTip": "D:\\daer\\TicketHub\\Views\\Events\\Edit.cshtml",
+              "RelativeToolTip": "Views\\Events\\Edit.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-24T02:20:14.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Event.cs",
+              "DocumentMoniker": "D:\\daer\\TicketHub\\Models\\Event.cs",
+              "RelativeDocumentMoniker": "Models\\Event.cs",
+              "ToolTip": "D:\\daer\\TicketHub\\Models\\Event.cs",
+              "RelativeToolTip": "Models\\Event.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwCEAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-11T15:35:48.39Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\ClientEvents\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\ClientEvents\\Index.cshtml",
@@ -244,7 +257,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ClientEventsController.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\ClientEventsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ClientEventsController.cs",
@@ -257,7 +270,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "WorkersController.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\WorkersController.cs",
               "RelativeDocumentMoniker": "Controllers\\WorkersController.cs",
@@ -269,7 +282,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Details.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\ClientEvents\\Details.cshtml",
               "RelativeDocumentMoniker": "Views\\ClientEvents\\Details.cshtml",
@@ -281,7 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "UsersController.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\UsersController.cs",
               "RelativeDocumentMoniker": "Controllers\\UsersController.cs",
@@ -294,7 +307,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Success.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\ClientEvents\\Success.cshtml",
               "RelativeDocumentMoniker": "Views\\ClientEvents\\Success.cshtml",
@@ -342,7 +355,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Sector.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Models\\Sector.cs",
               "RelativeDocumentMoniker": "Models\\Sector.cs",
@@ -354,7 +367,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Ticket.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Models\\Ticket.cs",
               "RelativeDocumentMoniker": "Models\\Ticket.cs",
@@ -366,7 +379,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "User.cs",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Models\\User.cs",
               "RelativeDocumentMoniker": "Models\\User.cs",
@@ -378,19 +391,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "EventsController.cs",
-              "DocumentMoniker": "D:\\daer\\TicketHub\\Controllers\\EventsController.cs",
-              "RelativeDocumentMoniker": "Controllers\\EventsController.cs",
-              "ToolTip": "D:\\daer\\TicketHub\\Controllers\\EventsController.cs",
-              "RelativeToolTip": "Controllers\\EventsController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-24T02:09:32.085Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "Create.cshtml",
               "DocumentMoniker": "D:\\daer\\TicketHub\\Views\\Events\\Create.cshtml",
               "RelativeDocumentMoniker": "Views\\Events\\Create.cshtml",

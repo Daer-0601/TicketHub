@@ -1,24 +1,25 @@
-/* ===== VARIABLES CSS ===== */
+/* ===== VARIABLES CSS - PALETA NEGRO, ROJO, BLANCO ===== */
 :root {
     /* Colores principales */
-    --primary-color: #3d0a49;
-    --primary-dark: #2d0759;
-    --primary-light: #5015bd;
-    --secondary-color: #7c3fe4;
+    --primary-color: #e31837;
+    --primary-dark: #c41230;
+    --primary-light: #ff2d4a;
+    --secondary-color: #1a1a1a;
     /* Colores neutros */
     --white: #ffffff;
-    --gray-50: #f8f9fa;
-    --gray-100: #e9ecef;
-    --gray-200: #dee2e6;
-    --gray-500: #6c757d;
-    --gray-800: #343a40;
-    --dark: #1a1a2e;
+    --gray-50: #fafafa;
+    --gray-100: #f5f5f5;
+    --gray-200: #e5e5e5;
+    --gray-500: #737373;
+    --gray-800: #262626;
+    --dark: #0d0d0d;
+    --black: #000000;
     /* Colores de estado */
-    --success: #28a745;
-    --warning: #ffc107;
-    --danger: #dc3545;
-    --info: #17a2b8;
-    /* Tipografía */
+    --success: #22c55e;
+    --warning: #eab308;
+    --danger: #ef4444;
+    --info: #3b82f6;
+    /* TipografÃ­a */
     --font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     --border-radius: 8px;
     --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -57,8 +58,8 @@ body {
 
 /* ===== LAYOUT PRINCIPAL ===== */
 .main-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-    box-shadow: var(--box-shadow);
+    background: var(--black);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-brand {
@@ -70,6 +71,7 @@ body {
 .brand-icon {
     margin-right: 0.5rem;
     font-size: 1.75rem;
+    color: var(--primary-color);
 }
 
 .navbar-nav .nav-link {
@@ -81,11 +83,16 @@ body {
     margin: 0 0.25rem;
 }
 
-    .navbar-nav .nav-link:hover {
-        color: var(--white) !important;
-        background-color: rgba(255, 255, 255, 0.1);
-        transform: translateY(-1px);
-    }
+.navbar-nav .nav-link:hover {
+    color: var(--white) !important;
+    background-color: var(--primary-color);
+    transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+    background-color: var(--primary-color);
+    color: var(--white) !important;
+}
 
 .main-content {
     flex: 1;
@@ -93,7 +100,7 @@ body {
 }
 
 .main-footer {
-    background: var(--dark);
+    background: var(--black);
     color: var(--white);
     padding: 1.5rem 0;
     margin-top: auto;
@@ -107,15 +114,15 @@ body {
     gap: 1rem;
 }
 
-    .footer-content a {
-        color: var(--gray-200);
-        text-decoration: none;
-        transition: var(--transition);
-    }
+.footer-content a {
+    color: var(--gray-200);
+    text-decoration: none;
+    transition: var(--transition);
+}
 
-        .footer-content a:hover {
-            color: var(--white);
-        }
+.footer-content a:hover {
+    color: var(--primary-color);
+}
 
 /* ===== COMPONENTES GENERALES ===== */
 .card {
@@ -126,13 +133,13 @@ body {
     margin-bottom: 1.5rem;
 }
 
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-    }
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
 
 .card-header {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    background: var(--black);
     color: var(--white);
     border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
     padding: 1rem 1.5rem;
@@ -148,25 +155,27 @@ body {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--primary-light), var(--secondary-color));
+    background: var(--primary-color);
     border: none;
+    color: var(--white);
 }
 
-    .btn-primary:hover {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
-        transform: translateY(-1px);
-        box-shadow: 0 4px 8px rgba(125, 60, 228, 0.3);
-    }
+.btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(227, 24, 55, 0.3);
+}
 
 .btn-outline-primary {
-    color: var(--primary-light);
-    border-color: var(--primary-light);
+    color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-    .btn-outline-primary:hover {
-        background-color: var(--primary-light);
-        border-color: var(--primary-light);
-    }
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: var(--white);
+}
 
 .table {
     border-radius: var(--border-radius);
@@ -174,31 +183,31 @@ body {
     box-shadow: var(--box-shadow);
 }
 
-    .table thead th {
-        background-color: var(--primary-color);
-        color: var(--white);
-        border: none;
-        padding: 1rem;
-        font-weight: 600;
-    }
+.table thead th {
+    background-color: var(--black);
+    color: var(--white);
+    border: none;
+    padding: 1rem;
+    font-weight: 600;
+}
 
-    .table tbody td {
-        padding: 1rem;
-        vertical-align: middle;
-    }
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+}
 
 /* ===== FORMULARIOS ===== */
 .form-control {
     border-radius: var(--border-radius);
-    border: 1px solid var(--gray-200);
+    border: 2px solid var(--gray-200);
     padding: 0.75rem 1rem;
     transition: var(--transition);
 }
 
-    .form-control:focus {
-        border-color: var(--primary-light);
-        box-shadow: 0 0 0 0.2rem rgba(125, 63, 228, 0.25);
-    }
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(227, 24, 55, 0.25);
+}
 
 .form-label {
     font-weight: 600;
@@ -208,11 +217,11 @@ body {
 
 /* ===== UTILIDADES ===== */
 .page-title {
-    color: var(--primary-color);
+    color: var(--black);
     font-weight: 700;
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
-    border-bottom: 3px solid var(--secondary-color);
+    border-bottom: 3px solid var(--primary-color);
     display: inline-block;
 }
 
@@ -249,5 +258,5 @@ body {
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
-    box-shadow: 0 0 0 0.2rem rgba(125, 63, 228, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(227, 24, 55, 0.25);
 }

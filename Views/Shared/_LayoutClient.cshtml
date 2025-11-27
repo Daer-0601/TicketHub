@@ -9,10 +9,10 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/client-events.css" asp-append-version="true" />
     <style>
-        /* Client Navbar Styles */
+        /* Client Navbar - Negro, Rojo, Blanco */
         .client-navbar {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            background: #000000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             position: fixed;
             top: 0;
             left: 0;
@@ -27,7 +27,7 @@
         }
         
         .client-navbar .navbar-brand i {
-            color: #e94560;
+            color: #e31837;
         }
         
         .client-navbar .nav-link {
@@ -40,11 +40,11 @@
         
         .client-navbar .nav-link:hover {
             color: #fff !important;
-            background-color: rgba(233, 69, 96, 0.2);
+            background-color: #e31837;
         }
         
         .client-navbar .nav-link.active {
-            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            background: #e31837;
             color: #fff !important;
         }
         
@@ -57,7 +57,7 @@
         .client-user-avatar {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, #e94560, #ff6b6b);
+            background: #e31837;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -71,13 +71,20 @@
             font-weight: 500;
         }
         
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border-top: 3px solid #e31837;
+        }
+        
         body {
             padding-top: 70px;
         }
         
-        /* Client Footer */
+        /* Client Footer - Negro, Rojo, Blanco */
         .client-footer {
-            background: #1a1a2e;
+            background: #000000;
             color: #fff;
             padding: 3rem 0 1.5rem;
             margin-top: 0;
@@ -91,7 +98,7 @@
         }
         
         .footer-section h5 {
-            color: #e94560;
+            color: #e31837;
             font-weight: 600;
             margin-bottom: 1rem;
         }
@@ -113,7 +120,7 @@
         }
         
         .footer-section ul li a:hover {
-            color: #e94560;
+            color: #e31837;
         }
         
         .footer-bottom {
@@ -142,8 +149,23 @@
         }
         
         .social-links a:hover {
-            background: #e94560;
+            background: #e31837;
             transform: translateY(-3px);
+        }
+        
+        .btn-outline-light:hover {
+            background: #e31837;
+            border-color: #e31837;
+        }
+        
+        .btn-danger {
+            background: #e31837;
+            border-color: #e31837;
+        }
+        
+        .btn-danger:hover {
+            background: #c41230;
+            border-color: #c41230;
         }
     </style>
 </head>
@@ -286,4 +308,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-

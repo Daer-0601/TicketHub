@@ -8,9 +8,13 @@
 
   <ItemGroup>
     <Compile Remove="Views\Clients\**" />
+    <Compile Remove="wwwroot\img\**" />
     <Content Remove="Views\Clients\**" />
+    <Content Remove="wwwroot\img\**" />
     <EmbeddedResource Remove="Views\Clients\**" />
+    <EmbeddedResource Remove="wwwroot\img\**" />
     <None Remove="Views\Clients\**" />
+    <None Remove="wwwroot\img\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +29,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
     <PackageReference Include="QRCoder" Version="1.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>

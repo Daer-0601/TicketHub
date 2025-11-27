@@ -15,35 +15,38 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         :root {
-            --worker-primary: #4e54c8;
-            --worker-secondary: #8f94fb;
-            --worker-dark: #1a1a2e;
-            --worker-success: #11998e;
-            --worker-danger: #e94560;
+            --worker-primary: #e31837;
+            --worker-secondary: #c41230;
+            --worker-dark: #000000;
+            --worker-success: #22c55e;
+            --worker-danger: #ef4444;
+            --worker-white: #ffffff;
+            --worker-gray: #737373;
         }
         
         body {
-            background: linear-gradient(180deg, #f8f9fa 0%, #fff 100%);
+            background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
             min-height: 100vh;
         }
         
-        /* Navbar Worker */
+        /* Navbar Worker - Negro y Rojo */
         .worker-navbar {
-            background: linear-gradient(135deg, var(--worker-primary), var(--worker-secondary));
-            box-shadow: 0 4px 20px rgba(78, 84, 200, 0.3);
+            background: var(--worker-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
         
         .worker-navbar .navbar-brand {
             font-weight: 700;
             font-size: 1.4rem;
+            color: var(--worker-white) !important;
         }
         
         .worker-navbar .navbar-brand i {
-            color: #fff;
+            color: var(--worker-primary);
         }
         
         .user-badge {
-            background: rgba(255,255,255,0.2);
+            background: var(--worker-primary);
             padding: 0.5rem 1rem;
             border-radius: 30px;
             display: flex;
@@ -67,16 +70,20 @@
             margin-bottom: 0.5rem;
         }
         
+        .worker-title i {
+            color: var(--worker-primary);
+        }
+        
         .worker-subtitle {
-            color: #6c757d;
+            color: var(--worker-gray);
             margin-bottom: 2rem;
         }
         
         /* Cards */
         .worker-card {
-            background: #fff;
+            background: var(--worker-white);
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
             overflow: hidden;
             margin-bottom: 1.5rem;
             border: 1px solid rgba(0,0,0,0.05);
@@ -91,18 +98,22 @@
         }
         
         .worker-card-header.primary {
-            background: linear-gradient(135deg, var(--worker-primary), var(--worker-secondary));
-            color: #fff;
+            background: var(--worker-dark);
+            color: var(--worker-white);
+        }
+        
+        .worker-card-header.primary i {
+            color: var(--worker-primary);
         }
         
         .worker-card-header.success {
-            background: linear-gradient(135deg, var(--worker-success), #38ef7d);
-            color: #fff;
+            background: var(--worker-success);
+            color: var(--worker-white);
         }
         
         .worker-card-header.secondary {
             background: var(--worker-dark);
-            color: #fff;
+            color: var(--worker-white);
         }
         
         .worker-card-body {
@@ -119,8 +130,8 @@
         .scan-mode-btn {
             flex: 1;
             padding: 0.75rem 1rem;
-            border: 2px solid #e9ecef;
-            background: #fff;
+            border: 2px solid #e5e5e5;
+            background: var(--worker-white);
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -137,9 +148,9 @@
         }
         
         .scan-mode-btn.active {
-            background: linear-gradient(135deg, var(--worker-primary), var(--worker-secondary));
-            color: #fff;
-            border-color: transparent;
+            background: var(--worker-primary);
+            color: var(--worker-white);
+            border-color: var(--worker-primary);
         }
         
         /* QR Reader */
@@ -161,32 +172,34 @@
         
         .scan-result.valid .scan-result-icon { color: var(--worker-success); }
         .scan-result.invalid .scan-result-icon { color: var(--worker-danger); }
-        .scan-result.warning .scan-result-icon { color: #f2994a; }
-        .scan-result.waiting .scan-result-icon { color: #dee2e6; }
+        .scan-result.warning .scan-result-icon { color: #eab308; }
+        .scan-result.waiting .scan-result-icon { color: #e5e5e5; }
         
         .scan-result-title {
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
+            color: var(--worker-dark);
         }
         
         .scan-result-message {
-            color: #6c757d;
+            color: var(--worker-gray);
         }
         
         .ticket-details {
-            background: #f8f9fa;
+            background: #fafafa;
             border-radius: 12px;
             padding: 1.25rem;
             margin-top: 1.5rem;
             text-align: left;
+            border-left: 4px solid var(--worker-primary);
         }
         
         .ticket-details-row {
             display: flex;
             justify-content: space-between;
             padding: 0.5rem 0;
-            border-bottom: 1px solid #e9ecef;
+            border-bottom: 1px solid #e5e5e5;
         }
         
         .ticket-details-row:last-child {
@@ -194,7 +207,7 @@
         }
         
         .ticket-details-label {
-            color: #6c757d;
+            color: var(--worker-gray);
             font-weight: 500;
         }
         
@@ -210,12 +223,12 @@
             padding: 0.75rem;
             border-radius: 10px;
             margin-bottom: 0.5rem;
-            background: #f8f9fa;
+            background: #fafafa;
             transition: all 0.2s ease;
         }
         
         .history-item:hover {
-            background: #e9ecef;
+            background: #f0f0f0;
         }
         
         .history-icon {
@@ -229,9 +242,9 @@
             font-size: 1rem;
         }
         
-        .history-icon.valid { background: rgba(17, 153, 142, 0.15); color: var(--worker-success); }
-        .history-icon.invalid { background: rgba(233, 69, 96, 0.15); color: var(--worker-danger); }
-        .history-icon.warning { background: rgba(242, 153, 74, 0.15); color: #f2994a; }
+        .history-icon.valid { background: rgba(34, 197, 94, 0.15); color: var(--worker-success); }
+        .history-icon.invalid { background: rgba(239, 68, 68, 0.15); color: var(--worker-danger); }
+        .history-icon.warning { background: rgba(234, 179, 8, 0.15); color: #eab308; }
         
         .history-content {
             flex: 1;
@@ -245,12 +258,12 @@
         
         .history-time {
             font-size: 0.75rem;
-            color: #6c757d;
+            color: var(--worker-gray);
         }
         
         /* Info Box */
         .info-box {
-            background: linear-gradient(135deg, rgba(78, 84, 200, 0.1), rgba(143, 148, 251, 0.1));
+            background: #fafafa;
             border-left: 4px solid var(--worker-primary);
             border-radius: 8px;
             padding: 1rem;
@@ -258,7 +271,7 @@
         }
         
         .info-box strong {
-            color: var(--worker-primary);
+            color: var(--worker-dark);
         }
         
         /* Buttons */
@@ -272,23 +285,25 @@
         }
         
         .btn-worker-primary {
-            background: linear-gradient(135deg, var(--worker-primary), var(--worker-secondary));
-            color: #fff;
+            background: var(--worker-primary);
+            color: var(--worker-white);
         }
         
         .btn-worker-primary:hover {
+            background: var(--worker-secondary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(78, 84, 200, 0.3);
+            box-shadow: 0 4px 15px rgba(227, 24, 55, 0.3);
         }
         
         .btn-worker-danger {
-            background: linear-gradient(135deg, var(--worker-danger), #ff6b6b);
-            color: #fff;
+            background: var(--worker-danger);
+            color: var(--worker-white);
         }
         
         .btn-worker-danger:hover {
+            background: #dc2626;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
         }
         
         /* Footer */
@@ -298,6 +313,17 @@
             padding: 1rem;
             text-align: center;
             margin-top: auto;
+        }
+        
+        .worker-footer i {
+            color: var(--worker-primary);
+        }
+        
+        /* Form Controls */
+        .form-select:focus,
+        .form-control:focus {
+            border-color: var(--worker-primary);
+            box-shadow: 0 0 0 0.2rem rgba(227, 24, 55, 0.25);
         }
     </style>
 </head>
@@ -339,7 +365,7 @@
                         <div class="worker-card-body">
                             <div class="mb-3">
                                 <label for="eventSelect" class="form-label fw-semibold">
-                                    <i class="bi bi-calendar-event me-1"></i> Evento
+                                    <i class="bi bi-calendar-event me-1" style="color: #e31837;"></i> Evento
                                 </label>
                                 <select id="eventSelect" class="form-select">
                                     <option value="">-- Seleccione un evento --</option>
@@ -354,7 +380,7 @@
 
                             <div class="mb-3">
                                 <label for="sectorSelect" class="form-label fw-semibold">
-                                    <i class="bi bi-grid-3x3-gap me-1"></i> Sector
+                                    <i class="bi bi-grid-3x3-gap me-1" style="color: #e31837;"></i> Sector
                                 </label>
                                 <select id="sectorSelect" class="form-select" disabled>
                                     <option value="">-- Primero seleccione un evento --</option>
