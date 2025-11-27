@@ -1,19 +1,167 @@
 ﻿@model IEnumerable<ProyectoFinal.Models.Event>
+@{
+    Layout = "~/Views/Shared/_LayoutClient.cshtml";
+    ViewData["Title"] = "Eventos";
+    var meses = new[] { "ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC" };
+}
 
-<h2 class="text-center mb-4">Eventos Disponibles</h2>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">Encuentra los mejores <span>eventos</span></h1>
+        <p class="hero-subtitle">Descubre conciertos, teatro, deportes y más. Compra tus entradas de forma segura.</p>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar eventos, artistas, lugares..." />
+            <button type="button" onclick="filterEvents()">
+                <i class="bi bi-search"></i> Buscar
+            </button>
+        </div>
+    </div>
+</section>
 
-<div class="row">
-    @foreach (var e in Model)
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <div class="stat-number">@Model.Count()</div>
+            <div class="stat-label">Eventos Disponibles</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">@Model.Sum(e => e.Sectors?.Count ?? 0)</div>
+            <div class="stat-label">Sectores</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">100%</div>
+            <div class="stat-label">Compra Segura</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">24/7</div>
+            <div class="stat-label">Soporte</div>
+        </div>
+    </div>
+</section>
+
+<!-- Events Section -->
+<section class="events-section">
+    <div class="section-header">
+        <h2 class="section-title">Próximos Eventos</h2>
+        <p class="section-subtitle">No te pierdas ningún evento. ¡Compra tus entradas ahora!</p>
+    </div>
+
+    @if (Model.Any())
     {
-        <div class="col-md-4 mb-3">
-            <div class="card">
-                <img src="@e.ImageUrl" class="card-img-top" style="height:200px;object-fit:cover;">
-                <div class="card-body">
-                    <h5>@e.Name</h5>
-                    <p>@e.Date.ToString("dd/MM/yyyy") - @e.Time</p>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-id="@e.EventId">Ver más</a>
+        <div class="events-grid" id="eventsGrid">
+            @foreach (var evento in Model.OrderBy(e => e.Date))
+            {
+                var minPrice = evento.Sectors?.Any() == true ? evento.Sectors.Min(s => s.Price) : 0;
+                
+                <div class="event-card" data-name="@evento.Name.ToLower()" data-location="@evento.Location.ToLower()">
+                    <div class="event-card-image">
+                        @if (!string.IsNullOrEmpty(evento.ImageUrl))
+                        {
+                            <img src="@evento.ImageUrl" alt="@evento.Name" />
+                        }
+                        else
+                        {
+                            <img src="https://via.placeholder.com/400x220/1a1a2e/ffffff?text=@evento.Name" alt="@evento.Name" />
+                        }
+                        
+                        <div class="date-badge">
+                            <span class="day">@evento.Date.Day</span>
+                            <span class="month">@meses[evento.Date.Month - 1]</span>
+                        </div>
+                        
+                        <button class="favorite-btn" title="Agregar a favoritos">
+                            <i class="bi bi-heart"></i>
+                        </button>
+                        
+                        <span class="category-tag">
+                            <i class="bi bi-ticket-perforated"></i> Evento
+                        </span>
+                    </div>
+                    
+                    <div class="event-card-body">
+                        <h3 class="event-card-title">@evento.Name</h3>
+                        
+                        <div class="event-card-info">
+                            <div class="event-card-info-item">
+                                <i class="bi bi-calendar-event"></i>
+                                <span>@evento.Date.ToString("dddd, dd MMMM yyyy", new System.Globalization.CultureInfo("es-ES"))</span>
+                            </div>
+                            <div class="event-card-info-item">
+                                <i class="bi bi-clock"></i>
+                                <span>@evento.Time.ToString(@"hh\:mm") hrs</span>
+                            </div>
+                            <div class="event-card-info-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span>@evento.Location</span>
+                            </div>
+                        </div>
+                        
+                        <div class="event-card-footer">
+                            <div class="event-price">
+                                Desde
+                                <span>$@minPrice.ToString("N0")</span>
+                            </div>
+                            <a asp-action="Details" asp-route-id="@evento.EventId" class="btn-tickets">
+                                Comprar <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
     }
-</div>
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-calendar-x"></i>
+            <h3>No hay eventos disponibles</h3>
+            <p>Vuelve pronto para ver nuevos eventos emocionantes.</p>
+        </div>
+    }
+</section>
+
+@section Scripts {
+    <script>
+        // Función de búsqueda/filtrado
+        function filterEvents() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.event-card');
+            
+            cards.forEach(card => {
+                const name = card.dataset.name;
+                const location = card.dataset.location;
+                
+                if (name.includes(searchTerm) || location.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Búsqueda en tiempo real
+        document.getElementById('searchInput').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                filterEvents();
+            }
+        });
+        
+        // Toggle favoritos
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const icon = this.querySelector('i');
+                if (icon.classList.contains('bi-heart')) {
+                    icon.classList.remove('bi-heart');
+                    icon.classList.add('bi-heart-fill');
+                } else {
+                    icon.classList.remove('bi-heart-fill');
+                    icon.classList.add('bi-heart');
+                }
+            });
+        });
+    </script>
+}

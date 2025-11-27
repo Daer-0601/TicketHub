@@ -1,51 +1,144 @@
 ﻿@model IEnumerable<ProyectoFinal.Models.Event>
 @{
-    ViewData["Title"] = "Eventos";
+    ViewData["Title"] = "Gestión de Eventos";
+    var totalEvents = Model.Count();
+    var totalSectors = Model.Sum(e => e.Sectors?.Count ?? 0);
+    var upcomingEvents = Model.Count(e => e.Date >= DateTime.Today);
 }
 
-<h1>Eventos</h1>
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="bi bi-calendar-event"></i> Gestión de Eventos
+        </h1>
+        <a asp-action="Create" class="btn-admin btn-admin-success">
+            <i class="bi bi-plus-lg"></i> Crear Nuevo Evento
+        </a>
+    </div>
 
-<p>
-    <a class="btn btn-success" asp-action="Create">Crear Nuevo Evento</a>
-</p>
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon events">
+                <i class="bi bi-calendar-check"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@totalEvents</h3>
+                <p>Total Eventos</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon tickets">
+                <i class="bi bi-calendar-plus"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@upcomingEvents</h3>
+                <p>Próximos Eventos</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="bi bi-grid-3x3"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@totalSectors</h3>
+                <p>Total Sectores</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="bi bi-ticket-perforated"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@Model.Sum(e => e.Sectors?.Sum(s => s.Capacity) ?? 0)</h3>
+                <p>Capacidad Total</p>
+            </div>
+        </div>
+    </div>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
-    @foreach (var item in Model)
+    <!-- Events Grid -->
+    @if (Model.Any())
     {
-        <div class="col">
-            <div class="card h-100">
-                @if (!string.IsNullOrEmpty(item.ImageUrl))
-                {
-                    <img src="@item.ImageUrl" class="card-img-top" alt="@item.Name" style="height:200px; object-fit:cover;">
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@item.Name</h5>
-                    <p class="card-text">
-                        <strong>Fecha:</strong> @item.Date.ToString("yyyy-MM-dd") <br />
-                        <strong>Hora:</strong> @item.Time.ToString(@"hh\:mm") <br />
-                        <strong>Ubicación:</strong> @item.Location
-                    </p>
-                    <p>
-                        <strong>Sectores:</strong>
-                        @if (item.Sectors != null && item.Sectors.Any())
+        <div class="events-admin-grid">
+            @foreach (var item in Model.OrderByDescending(e => e.Date))
+            {
+                var isPast = item.Date < DateTime.Today;
+                <div class="event-admin-card">
+                    <div class="event-admin-image">
+                        @if (!string.IsNullOrEmpty(item.ImageUrl))
                         {
-                            <ul class="mb-0">
-                                @foreach (var s in item.Sectors)
-                                {
-                                    <li>@s.Name - $@s.Price - Capacidad: @s.Capacity</li>
-                                }
-                            </ul>
+                            <img src="@item.ImageUrl" alt="@item.Name" />
                         }
                         else
                         {
-                            <span>No hay sectores</span>
+                            <img src="https://via.placeholder.com/400x180/1a1a2e/ffffff?text=@item.Name" alt="@item.Name" />
                         }
-                    </p>
+                        <span class="event-admin-badge">
+                            @(isPast ? "Finalizado" : "Activo")
+                        </span>
+                    </div>
+                    
+                    <div class="event-admin-body">
+                        <h5 class="event-admin-title">@item.Name</h5>
+                        
+                        <div class="event-admin-info">
+                            <span><i class="bi bi-calendar3"></i> @item.Date.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"))</span>
+                            <span><i class="bi bi-clock"></i> @item.Time.ToString(@"hh\:mm") hrs</span>
+                            <span><i class="bi bi-geo-alt"></i> @item.Location</span>
+                        </div>
+                        
+                        <div class="event-admin-sectors">
+                            <h6><i class="bi bi-grid-3x3-gap"></i> Sectores</h6>
+                            @if (item.Sectors != null && item.Sectors.Any())
+                            {
+                                <ul class="sector-list">
+                                    @foreach (var s in item.Sectors.Take(3))
+                                    {
+                                        <li>
+                                            <span>@s.Name (Cap: @s.Capacity)</span>
+                                            <span class="sector-price">$@s.Price.ToString("N0")</span>
+                                        </li>
+                                    }
+                                    @if (item.Sectors.Count > 3)
+                                    {
+                                        <li class="text-muted">+ @(item.Sectors.Count - 3) más...</li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <span class="text-muted" style="font-size: 0.85rem;">Sin sectores configurados</span>
+                            }
+                        </div>
+                        
+                        <div class="event-admin-actions">
+                            <a asp-action="Details" asp-route-id="@item.EventId" class="btn-admin btn-admin-info">
+                                <i class="bi bi-eye"></i> Ver
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.EventId" class="btn-admin btn-admin-warning">
+                                <i class="bi bi-pencil"></i> Editar
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.EventId" class="btn-admin btn-admin-danger">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-footer text-center">
-                    <a asp-action="Details" asp-route-id="@item.EventId" class="btn btn-info btn-sm">Detalles</a>
-                    <a asp-action="Edit" asp-route-id="@item.EventId" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Delete" asp-route-id="@item.EventId" class="btn btn-danger btn-sm">Eliminar</a>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="data-card">
+            <div class="data-card-body">
+                <div class="empty-state">
+                    <i class="bi bi-calendar-x"></i>
+                    <h4>No hay eventos registrados</h4>
+                    <p>Comienza creando tu primer evento</p>
+                    <a asp-action="Create" class="btn-admin btn-admin-success mt-3">
+                        <i class="bi bi-plus-lg"></i> Crear Evento
+                    </a>
                 </div>
             </div>
         </div>

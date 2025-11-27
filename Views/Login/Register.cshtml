@@ -10,6 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registro - Sistema de Tickets</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 </head>
 <body>
@@ -27,6 +28,25 @@
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="bi bi-check-circle-fill"></i> @TempData["SuccessMessage"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i> @TempData["ErrorMessage"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <span>@error.ErrorMessage</span><br />
+                        }
                     </div>
                 }
 
@@ -60,7 +80,9 @@
                                placeholder="Repita la contraseña" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-login">Registrarse</button>
+                    <button type="submit" class="btn btn-primary btn-login">
+                        <i class="bi bi-person-plus-fill"></i> Registrarse
+                    </button>
                 </form>
 
                 <div class="login-links">

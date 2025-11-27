@@ -17,115 +17,119 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ProyectoFinal
 build_property.RootNamespace = ProyectoFinal
-build_property.ProjectDir = D:\TicketHub\
+build_property.ProjectDir = D:\daer\TicketHub\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\TicketHub
+build_property.MSBuildProjectDirectory = D:\daer\TicketHub
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/TicketHub/Views/ClientEvents/Details.cshtml]
+[D:/daer/TicketHub/Views/ClientEvents/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50RXZlbnRzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/ClientEvents/Index.cshtml]
+[D:/daer/TicketHub/Views/ClientEvents/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50RXZlbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/ClientEvents/Success.cshtml]
+[D:/daer/TicketHub/Views/ClientEvents/Success.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xpZW50RXZlbnRzXFN1Y2Nlc3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Events/Create.cshtml]
+[D:/daer/TicketHub/Views/Events/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXZlbnRzXENyZWF0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Events/Delete.cshtml]
+[D:/daer/TicketHub/Views/Events/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXZlbnRzXERlbGV0ZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Events/Details.cshtml]
+[D:/daer/TicketHub/Views/Events/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXZlbnRzXERldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Events/Edit.cshtml]
+[D:/daer/TicketHub/Views/Events/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXZlbnRzXEVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Events/Index.cshtml]
+[D:/daer/TicketHub/Views/Events/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRXZlbnRzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Home/Index.cshtml]
+[D:/daer/TicketHub/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Home/Privacy.cshtml]
+[D:/daer/TicketHub/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Login/AccessDenied.cshtml]
+[D:/daer/TicketHub/Views/Login/AccessDenied.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cQWNjZXNzRGVuaWVkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Login/ForgotPassword.cshtml]
+[D:/daer/TicketHub/Views/Login/ForgotPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cRm9yZ290UGFzc3dvcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Login/Index.cshtml]
+[D:/daer/TicketHub/Views/Login/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Login/Register.cshtml]
+[D:/daer/TicketHub/Views/Login/Register.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVnaXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Login/ResetPassword.cshtml]
+[D:/daer/TicketHub/Views/Login/ResetPassword.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cUmVzZXRQYXNzd29yZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Shared/Error.cshtml]
+[D:/daer/TicketHub/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/daer/TicketHub/Views/Shared/_LayoutClient.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXRDbGllbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/daer/TicketHub/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Users/Create.cshtml]
+[D:/daer/TicketHub/Views/Users/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcQ3JlYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Users/Delete.cshtml]
+[D:/daer/TicketHub/Views/Users/Delete.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRGVsZXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Users/Details.cshtml]
+[D:/daer/TicketHub/Views/Users/Details.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRGV0YWlscy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Users/Edit.cshtml]
+[D:/daer/TicketHub/Views/Users/Edit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Users/Index.cshtml]
+[D:/daer/TicketHub/Views/Users/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Workers/Index.cshtml]
+[D:/daer/TicketHub/Views/Workers/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2Vyc1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/_ViewImports.cshtml]
+[D:/daer/TicketHub/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/_ViewStart.cshtml]
+[D:/daer/TicketHub/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/TicketHub/Views/Shared/_Layout.cshtml]
+[D:/daer/TicketHub/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ww5h623m21

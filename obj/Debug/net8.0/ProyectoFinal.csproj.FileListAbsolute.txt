@@ -1200,3 +1200,5 @@ D:\TicketHub\bin\Debug\net8.0\Microsoft.DotNet.PlatformAbstractions.dll
 D:\TicketHub\bin\Debug\net8.0\QRCoder.dll
 D:\TicketHub\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 D:\TicketHub\bin\Debug\net8.0\itext.bouncy-castle-adapter.dll
+D:\daer\TicketHub\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+D:\daer\TicketHub\bin\Debug\net8.0\itext.bouncy-castle-adapter.dll

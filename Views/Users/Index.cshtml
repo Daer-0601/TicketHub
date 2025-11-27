@@ -1,53 +1,131 @@
 ﻿@model IEnumerable<ProyectoFinal.Models.User>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Gestión de Usuarios";
+    var totalUsers = Model.Count();
+    var admins = Model.Count(u => u.Role == "Admin");
+    var workers = Model.Count(u => u.Role == "Worker");
+    var clients = Model.Count(u => u.Role == "Client");
 }
 
-<h1>Index</h1>
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="bi bi-people"></i> Gestión de Usuarios
+        </h1>
+        <a asp-action="Create" class="btn-admin btn-admin-success">
+            <i class="bi bi-person-plus"></i> Crear Usuario
+        </a>
+    </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.UserName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Role)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Password)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <!-- Stats Row -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="bi bi-people-fill"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@totalUsers</h3>
+                <p>Total Usuarios</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon events">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@admins</h3>
+                <p>Administradores</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon tickets">
+                <i class="bi bi-person-badge"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@workers</h3>
+                <p>Trabajadores</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="bi bi-person-heart"></i>
+            </div>
+            <div class="stat-content">
+                <h3>@clients</h3>
+                <p>Clientes</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="data-card">
+        <div class="data-card-header">
+            <h5><i class="bi bi-table me-2"></i> Lista de Usuarios</h5>
+            <span class="badge bg-light text-dark">@totalUsers registrados</span>
+        </div>
+        <div class="data-card-body">
+            @if (Model.Any())
+            {
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-hash"></i> ID</th>
+                                <th><i class="bi bi-person"></i> Usuario</th>
+                                <th><i class="bi bi-envelope"></i> Email</th>
+                                <th><i class="bi bi-shield"></i> Rol</th>
+                                <th><i class="bi bi-gear"></i> Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                var roleClass = item.Role?.ToLower() ?? "client";
+                                <tr>
+                                    <td><strong>#@item.UserId</strong></td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div class="user-avatar" style="width: 35px; height: 35px; font-size: 1rem;">
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <span>@item.UserName</span>
+                                        </div>
+                                    </td>
+                                    <td>@item.Email</td>
+                                    <td>
+                                        <span class="role-badge @roleClass">@item.Role</span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a asp-action="Details" asp-route-id="@item.UserId" class="btn-admin btn-admin-info" title="Ver detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.UserId" class="btn-admin btn-admin-warning" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="btn-admin btn-admin-danger" title="Eliminar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-people"></i>
+                    <h4>No hay usuarios registrados</h4>
+                    <p>Comienza creando el primer usuario</p>
+                    <a asp-action="Create" class="btn-admin btn-admin-success mt-3">
+                        <i class="bi bi-person-plus"></i> Crear Usuario
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
