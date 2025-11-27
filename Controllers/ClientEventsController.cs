@@ -89,7 +89,7 @@ namespace ProyectoFinal.Controllers
                         EventId = eventId,
                         SectorId = sectorId,
                         Price = sector.Price,
-                        UserId = 1, // usuario por defecto
+
                     };
 
                     _context.Tickets.Add(ticket);

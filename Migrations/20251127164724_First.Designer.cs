@@ -12,8 +12,8 @@ using ProyectoFinal.Data;
 namespace ProyectoFinal.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251120173518_first")]
-    partial class first
+    [Migration("20251127164724_First")]
+    partial class First
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,9 +116,6 @@ namespace ProyectoFinal.Migrations
                     b.Property<int?>("SectorId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("TicketId");
 
                     b.HasIndex("EventId");
@@ -126,8 +123,6 @@ namespace ProyectoFinal.Migrations
                     b.HasIndex("SectorId");
 
                     b.HasIndex("SectorId1");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
                 });
@@ -193,17 +188,9 @@ namespace ProyectoFinal.Migrations
                         .WithMany("Tickets")
                         .HasForeignKey("SectorId1");
 
-                    b.HasOne("ProyectoFinal.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Event");
 
                     b.Navigation("Sector");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProyectoFinal.Models.Event", b =>

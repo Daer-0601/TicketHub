@@ -17,14 +17,6 @@ namespace ProyectoFinal.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-
-			modelBuilder.Entity<Ticket>()
-				.HasOne(t => t.User)
-				.WithMany()
-				.HasForeignKey(t => t.UserId)
-				.OnDelete(DeleteBehavior.Restrict);
-
-
 			modelBuilder.Entity<Ticket>()
 				.HasOne(t => t.Event)
 				.WithMany(e => e.Tickets)

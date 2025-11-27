@@ -236,5 +236,43 @@ namespace ProyectoFinal.Controllers
         {
             return _context.Events.Any(e => e.EventId == id);
         }
+
+        // GET: Events/Reports
+        public async Task<IActionResult> Reports()
+        {
+            var events = await _context.Events
+                .Include(e => e.Sectors)
+                .Include(e => e.Tickets)
+                .OrderByDescending(e => e.Date)
+                .ToListAsync();
+
+            // Calcular estadísticas generales
+            var totalTicketsSold = await _context.Tickets.CountAsync();
+            var totalTicketsScanned = await _context.Tickets.CountAsync(t => t.ScannedAt != null);
+            var totalRevenue = await _context.Tickets.SumAsync(t => t.Price);
+
+            ViewBag.TotalTicketsSold = totalTicketsSold;
+            ViewBag.TotalTicketsScanned = totalTicketsScanned;
+            ViewBag.TotalRevenue = totalRevenue;
+            ViewBag.PendingEntry = totalTicketsSold - totalTicketsScanned;
+
+            return View(events);
+        }
+
+        // GET: Events/EventReport/5
+        public async Task<IActionResult> EventReport(int? id)
+        {
+            if (id == null) return NotFound();
+
+            var evt = await _context.Events
+                .Include(e => e.Sectors)
+                .Include(e => e.Tickets)
+                    .ThenInclude(t => t.Sector)
+                .FirstOrDefaultAsync(e => e.EventId == id);
+
+            if (evt == null) return NotFound();
+
+            return View(evt);
+        }
     }
 }

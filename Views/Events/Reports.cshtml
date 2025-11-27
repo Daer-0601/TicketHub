@@ -1,0 +1,148 @@
+@model IEnumerable<ProyectoFinal.Models.Event>
+@{
+    ViewData["Title"] = "Reportes de Ventas";
+    var totalSold = (int)ViewBag.TotalTicketsSold;
+    var totalScanned = (int)ViewBag.TotalTicketsScanned;
+    var totalRevenue = (decimal)ViewBag.TotalRevenue;
+    var pendingEntry = (int)ViewBag.PendingEntry;
+    var scanPercentage = totalSold > 0 ? (totalScanned * 100.0 / totalSold) : 0;
+}
+
+<div class="container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="bi bi-bar-chart-fill"></i> Reportes de Ventas e Ingresos
+        </h1>
+        <a asp-action="Index" class="btn-admin btn-admin-outline">
+            <i class="bi bi-arrow-left"></i> Volver a Eventos
+        </a>
+    </div>
+
+    <!-- Tabla de eventos -->
+    <div class="data-card">
+        <div class="data-card-header">
+            <h5><i class="bi bi-calendar-event me-2"></i> Detalle por Evento</h5>
+        </div>
+        <div class="data-card-body">
+            @if (Model.Any())
+            {
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Evento</th>
+                                <th>Fecha</th>
+                                <th class="text-center">Vendidas</th>
+                                <th class="text-center">Ingresadas</th>
+                                <th class="text-center">Pendientes</th>
+                                <th class="text-center">% Ingreso</th>
+                                <th class="text-end">Ingresos</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var evt in Model)
+                            {
+                                var eventTickets = evt.Tickets?.Count ?? 0;
+                                var eventScanned = evt.Tickets?.Count(t => t.ScannedAt != null) ?? 0;
+                                var eventPending = eventTickets - eventScanned;
+                                var eventRevenue = evt.Tickets?.Sum(t => t.Price) ?? 0;
+                                var eventPercentage = eventTickets > 0 ? (eventScanned * 100.0 / eventTickets) : 0;
+                                var isPast = evt.Date < DateTime.Today;
+                                
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            @if (!string.IsNullOrEmpty(evt.ImageUrl))
+                                            {
+                                                <img src="@evt.ImageUrl" alt="@evt.Name" 
+                                                     style="width: 45px; height: 45px; object-fit: cover; border-radius: 8px;">
+                                            }
+                                            else
+                                            {
+                                                <div style="width: 45px; height: 45px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                                                    <i class="bi bi-calendar-event text-muted"></i>
+                                                </div>
+                                            }
+                                            <div>
+                                                <strong>@evt.Name</strong>
+                                                <br><small class="text-muted">@evt.Location</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <span class="@(isPast ? "text-muted" : "")">
+                                            @evt.Date.ToString("dd MMM yyyy")
+                                        </span>
+                                        @if (isPast)
+                                        {
+                                            <br><span class="badge" style="background: #737373; color: #fff; font-size: 0.7rem;">Finalizado</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background: #e31837; color: #fff; font-size: 0.9rem; padding: 0.5rem 0.75rem;">
+                                            @eventTickets
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background: #22c55e; color: #fff; font-size: 0.9rem; padding: 0.5rem 0.75rem;">
+                                            @eventScanned
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background: #eab308; color: #000; font-size: 0.9rem; padding: 0.5rem 0.75rem;">
+                                            @eventPending
+                                        </span>
+                                    </td>
+                                    <td class="text-center">
+                                        <div style="width: 80px; margin: 0 auto;">
+                                            <div class="progress" style="height: 8px; border-radius: 4px; background: #f0f0f0;">
+                                                <div class="progress-bar" style="width: @eventPercentage%; background: #22c55e; border-radius: 4px;"></div>
+                                            </div>
+                                            <small class="text-muted">@eventPercentage.ToString("F0")%</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">
+                                        <strong style="color: #22c55e;">$@eventRevenue.ToString("N0")</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        <a asp-action="EventReport" asp-route-id="@evt.EventId" class="btn-admin btn-admin-info" title="Ver detalle">
+                                            <i class="bi bi-eye"></i> Detalle
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot style="background: #fafafa; font-weight: 600;">
+                            <tr>
+                                <td colspan="2" class="text-end">TOTALES:</td>
+                                <td class="text-center">@totalSold</td>
+                                <td class="text-center">@totalScanned</td>
+                                <td class="text-center">@pendingEntry</td>
+                                <td class="text-center">@scanPercentage.ToString("F0")%</td>
+                                <td class="text-end" style="color: #22c55e;">$@totalRevenue.ToString("N0")</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    <i class="bi bi-bar-chart"></i>
+                    <h4>No hay datos de ventas</h4>
+                    <p>Aún no se han vendido entradas.</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<style>
+    .admin-table tfoot td {
+        border-top: 2px solid #e5e5e5;
+        padding: 1rem;
+    }
+</style>

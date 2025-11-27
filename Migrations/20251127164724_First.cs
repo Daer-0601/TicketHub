@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProyectoFinal.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,7 +77,6 @@ namespace ProyectoFinal.Migrations
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     IsValid = table.Column<bool>(type: "bit", nullable: false),
                     ScannedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserId = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
                     SectorId1 = table.Column<int>(type: "int", nullable: true)
                 },
@@ -101,12 +100,6 @@ namespace ProyectoFinal.Migrations
                         column: x => x.SectorId1,
                         principalTable: "Sectors",
                         principalColumn: "SectorId");
-                    table.ForeignKey(
-                        name: "FK_Tickets_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -128,11 +121,6 @@ namespace ProyectoFinal.Migrations
                 name: "IX_Tickets_SectorId1",
                 table: "Tickets",
                 column: "SectorId1");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_UserId",
-                table: "Tickets",
-                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -142,10 +130,10 @@ namespace ProyectoFinal.Migrations
                 name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "Sectors");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Sectors");
 
             migrationBuilder.DropTable(
                 name: "Events");

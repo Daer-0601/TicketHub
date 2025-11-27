@@ -2,7 +2,6 @@
 @{
     ViewData["Title"] = "Gestión de Eventos";
     var totalEvents = Model.Count();
-    var totalSectors = Model.Sum(e => e.Sectors?.Count ?? 0);
     var upcomingEvents = Model.Count(e => e.Date >= DateTime.Today);
 }
 
@@ -12,9 +11,14 @@
         <h1 class="page-title">
             <i class="bi bi-calendar-event"></i> Gestión de Eventos
         </h1>
-        <a asp-action="Create" class="btn-admin btn-admin-success">
-            <i class="bi bi-plus-lg"></i> Crear Nuevo Evento
-        </a>
+        <div class="d-flex gap-2">
+            <a asp-action="Reports" class="btn-admin btn-admin-info">
+                <i class="bi bi-bar-chart-fill"></i> Ver Reportes
+            </a>
+            <a asp-action="Create" class="btn-admin btn-admin-success">
+                <i class="bi bi-plus-lg"></i> Crear Nuevo Evento
+            </a>
+        </div>
     </div>
 
     <!-- Stats Row -->
@@ -35,24 +39,6 @@
             <div class="stat-content">
                 <h3>@upcomingEvents</h3>
                 <p>Próximos Eventos</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon users">
-                <i class="bi bi-grid-3x3"></i>
-            </div>
-            <div class="stat-content">
-                <h3>@totalSectors</h3>
-                <p>Total Sectores</p>
-            </div>
-        </div>
-        <div class="stat-card">
-            <div class="stat-icon revenue">
-                <i class="bi bi-ticket-perforated"></i>
-            </div>
-            <div class="stat-content">
-                <h3>@Model.Sum(e => e.Sectors?.Sum(s => s.Capacity) ?? 0)</h3>
-                <p>Capacidad Total</p>
             </div>
         </div>
     </div>
