@@ -9,6 +9,7 @@ using ProyectoFinal.Data;
 using ProyectoFinal.Models;
 using System.Net;
 using System.Net.Mail;
+using BCrypt.Net;
 
 namespace ProyectoFinal.Controllers
 {
@@ -63,7 +64,7 @@ namespace ProyectoFinal.Controllers
             {
                 // Generate random password
                 var generatedPassword = GeneratePassword();
-                user.Password = generatedPassword;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(generatedPassword);
                 user.MustChangePassword = true;
 
                 _context.Add(user);

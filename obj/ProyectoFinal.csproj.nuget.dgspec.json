@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\repos\\TicketHub\\ProyectoFinal.csproj": {}
+    "D:\\daer\\TicketHub\\ProyectoFinal.csproj": {}
   },
   "projects": {
-    "D:\\repos\\TicketHub\\ProyectoFinal.csproj": {
+    "D:\\daer\\TicketHub\\ProyectoFinal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\repos\\TicketHub\\ProyectoFinal.csproj",
+        "projectUniqueName": "D:\\daer\\TicketHub\\ProyectoFinal.csproj",
         "projectName": "ProyectoFinal",
-        "projectPath": "D:\\repos\\TicketHub\\ProyectoFinal.csproj",
+        "projectPath": "D:\\daer\\TicketHub\\ProyectoFinal.csproj",
         "packagesPath": "C:\\Users\\usuariocc\\.nuget\\packages\\",
-        "outputPath": "D:\\repos\\TicketHub\\obj\\",
+        "outputPath": "D:\\daer\\TicketHub\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\usuariocc\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -46,6 +46,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
             "BouncyCastle.NetCore": {
               "target": "Package",
               "version": "[1.9.0, )"

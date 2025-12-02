@@ -1504,3 +1504,4 @@ D:\repos\TicketHub\obj\Debug\net8.0\refint\ProyectoFinal.dll
 D:\repos\TicketHub\obj\Debug\net8.0\ProyectoFinal.pdb
 D:\repos\TicketHub\obj\Debug\net8.0\ProyectoFinal.genruntimeconfig.cache
 D:\repos\TicketHub\obj\Debug\net8.0\ref\ProyectoFinal.dll
+D:\daer\TicketHub\bin\Debug\net8.0\BCrypt.Net-Next.dll

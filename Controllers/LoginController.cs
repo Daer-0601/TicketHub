@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using System.Net;
 using System.Net.Mail;
+using BCrypt.Net;
 
 namespace ProyectoFinal.Controllers
 {
@@ -46,9 +47,9 @@ namespace ProyectoFinal.Controllers
             try
             {
                 var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.UserName == loginViewModel.UserName && u.Password == loginViewModel.Password);
+                    .FirstOrDefaultAsync(u => u.UserName == loginViewModel.UserName);
 
-                if (user == null)
+                if (user == null || !BCrypt.Net.BCrypt.Verify(loginViewModel.Password, user.Password))
                 {
                     ModelState.AddModelError(string.Empty, "Invalid username or password.");
                     return View(loginViewModel);
@@ -125,7 +126,7 @@ namespace ProyectoFinal.Controllers
                 }
 
                 
-                user.Password = newPassword;
+                user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
                 user.MustChangePassword = false;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
@@ -182,6 +183,7 @@ namespace ProyectoFinal.Controllers
 
                 newUser.Role = "Client";
                 newUser.MustChangePassword = false;
+                newUser.Password = BCrypt.Net.BCrypt.HashPassword(newUser.Password);
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
@@ -221,7 +223,7 @@ namespace ProyectoFinal.Controllers
               
                     var newPassword = GeneratePassword();
 
-                    user.Password = newPassword;
+                    user.Password = BCrypt.Net.BCrypt.HashPassword(newPassword);
                     user.MustChangePassword = true;  
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();

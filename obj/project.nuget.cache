@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "Wndud1Nwq7o=",
+  "dgSpecHash": "cjBunwyKeZM=",
   "success": true,
-  "projectFilePath": "D:\\repos\\TicketHub\\ProyectoFinal.csproj",
+  "projectFilePath": "D:\\daer\\TicketHub\\ProyectoFinal.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\usuariocc\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\usuariocc\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\usuariocc\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\usuariocc\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\usuariocc\\.nuget\\packages\\bouncycastle.netcore\\1.9.0\\bouncycastle.netcore.1.9.0.nupkg.sha512",
     "C:\\Users\\usuariocc\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
