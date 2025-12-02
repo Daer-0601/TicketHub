@@ -71,7 +71,7 @@
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th><i class="bi bi-hash"></i> ID</th>
+                                
                                 <th><i class="bi bi-person"></i> Username</th>
                                 <th><i class="bi bi-envelope"></i> Email</th>
                                 <th><i class="bi bi-shield"></i> Role</th>
@@ -83,7 +83,7 @@
                             {
                                 var roleClass = item.Role?.ToLower() ?? "client";
                                 <tr>
-                                    <td><strong>#@item.UserId</strong></td>
+                                   
                                     <td>
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="user-avatar" style="width: 35px; height: 35px; font-size: 1rem;">
@@ -100,7 +100,7 @@
                                         <div class="d-flex gap-2">
                                            
                                           
-                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="btn-admin btn-admin-danger" title="Delete">
+                                            <a asp-action="Delete" asp-route-id="@item.UserId class="btn-admin btn-admin-danger" title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
