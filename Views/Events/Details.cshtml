@@ -1,9 +1,9 @@
 ﻿@model ProyectoFinal.Models.Event
 @{
-    ViewData["Title"] = "Detalles del Evento";
+    ViewData["Title"] = "Event Details";
 }
 
-<h1>Detalles del Evento</h1>
+<h1>Event Details</h1>
 
 <div class="card mb-3">
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -13,20 +13,20 @@
     <div class="card-body">
         <h3 class="card-title">@Model.Name</h3>
         <p class="card-text">
-            <strong>Fecha:</strong> @Model.Date.ToString("yyyy-MM-dd") <br />
-            <strong>Hora:</strong> @Model.Time.ToString(@"hh\:mm") <br />
-            <strong>Ubicación:</strong> @Model.Location
+            <strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd") <br />
+            <strong>Time:</strong> @Model.Time.ToString(@"hh\:mm") <br />
+            <strong>Location:</strong> @Model.Location
         </p>
 
-        <h5>Sectores</h5>
+        <h5>Sectors</h5>
         @if (Model.Sectors != null && Model.Sectors.Any())
         {
             <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Capacidad</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Capacity</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,11 +43,11 @@
         }
         else
         {
-            <p>No hay sectores registrados.</p>
+            <p>No sectors registered.</p>
         }
     </div>
 </div>
 
-<a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-warning">Editar</a>
-<a asp-action="Delete" asp-route-id="@Model.EventId" class="btn btn-danger">Eliminar</a>
-<a asp-action="Index" class="btn btn-secondary">Volver</a>
+<a asp-action="Edit" asp-route-id="@Model.EventId" class="btn btn-warning">Edit</a>
+<a asp-action="Delete" asp-route-id="@Model.EventId" class="btn btn-danger">Delete</a>
+<a asp-action="Index" class="btn btn-secondary">Back</a>

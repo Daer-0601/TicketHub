@@ -1,58 +1,78 @@
 ﻿@model ProyectoFinal.Models.Event
 @{
-    ViewData["Title"] = "Crear Evento";
+    ViewData["Title"] = "Create Event";
 }
 
-<h1>Crear Evento</h1>
+<h1>Create Event</h1>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>Please correct the following errors:</strong>
+        <ul class="mb-0 mt-2">
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
 
 <form asp-action="Create" enctype="multipart/form-data">
     <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
+        <label asp-for="Name" class="form-label">Event Name *</label>
+        <input asp-for="Name" class="form-control" placeholder="Only letters, numbers and spaces" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Date" class="form-label"></label>
-        <input asp-for="Date" type="date" class="form-control" />
+        <label asp-for="Date" class="form-label">Date *</label>
+        <input asp-for="Date" type="date" class="form-control" min="@DateTime.Today.ToString("yyyy-MM-dd")" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+        <small class="form-text text-muted">Date cannot be in the past.</small>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Time" class="form-label"></label>
+        <label asp-for="Time" class="form-label">Time *</label>
         <input asp-for="Time" type="time" class="form-control" />
+        <span asp-validation-for="Time" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Location" class="form-label"></label>
-        <input asp-for="Location" class="form-control" />
+        <label asp-for="Location" class="form-label">Location *</label>
+        <input asp-for="Location" class="form-control" placeholder="Only letters, numbers and spaces" />
+        <span asp-validation-for="Location" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label>Imagen</label>
-        <input type="file" name="imageFile" class="form-control" />
+        <label>Image</label>
+        <input type="file" name="imageFile" class="form-control" accept="image/*" />
     </div>
 
-    <h4>Sectores</h4>
+    <h4>Sectors</h4>
+    <p class="text-muted small">Name: only letters, numbers and spaces. Price and Capacity must be at least 1.</p>
     <table class="table" id="sectorsTable">
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Capacidad</th>
-                <th>Acción</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Capacity</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
-    <button type="button" class="btn btn-info mb-3" id="addSector">Agregar Sector</button>
+    <button type="button" class="btn btn-info mb-3" id="addSector">Add Sector</button>
 
     <div class="mb-3">
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
     </div>
 </form>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>
         let sectorIndex = 0;
 
@@ -60,9 +80,9 @@
             const tbody = document.getElementById("sectorsTable").querySelector("tbody");
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                    <td><input name="Sectors[${sectorIndex}].Name" class="form-control" /></td>
-                    <td><input name="Sectors[${sectorIndex}].Price" type="number" step="0.01" class="form-control" /></td>
-                    <td><input name="Sectors[${sectorIndex}].Capacity" type="number" class="form-control" /></td>
+                    <td><input name="Sectors[${sectorIndex}].Name" class="form-control" pattern="^[a-zA-Z0-9\\s]+$" title="Only letters, numbers and spaces" required /></td>
+                    <td><input name="Sectors[${sectorIndex}].Price" type="number" step="0.01" min="1" class="form-control" required /></td>
+                    <td><input name="Sectors[${sectorIndex}].Capacity" type="number" min="1" class="form-control" required /></td>
                     <td><button type="button" class="btn btn-danger btn-sm removeSector">X</button></td>
                 `;
             tbody.appendChild(tr);
@@ -72,6 +92,21 @@
         document.addEventListener("click", function (e) {
             if (e.target && e.target.classList.contains("removeSector")) {
                 e.target.closest("tr").remove();
+            }
+        });
+
+        // Validate sector names on form submit
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const sectorNames = document.querySelectorAll('input[name^="Sectors"][name$=".Name"]');
+            const namePattern = /^[a-zA-Z0-9\s]+$/;
+            
+            for (let input of sectorNames) {
+                if (input.value && !namePattern.test(input.value)) {
+                    e.preventDefault();
+                    alert('Sector names can only contain letters, numbers and spaces.');
+                    input.focus();
+                    return false;
+                }
             }
         });
     </script>

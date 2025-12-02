@@ -4,11 +4,11 @@
 }
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro - Sistema de Tickets</title>
+    <title>Register - TicketHub</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
@@ -18,8 +18,8 @@
         <div class="login-card">
             <div class="login-header">
                 <i class="bi bi-person-plus"></i>
-                <h2>Crear Cuenta</h2>
-                <small>Registro de nuevo usuario</small>
+                <h2>Create Account</h2>
+                <small>New user registration</small>
             </div>
 
             <div class="login-body">
@@ -54,39 +54,36 @@
                     @Html.AntiForgeryToken()
 
                     <div class="form-group">
-                        <label asp-for="UserName" class="form-label">Nombre de Usuario *</label>
-                        <input type="text" class="form-control" asp-for="UserName" placeholder="Ingrese su usuario" required>
+                        <label asp-for="UserName" class="form-label">Username *</label>
+                        <input type="text" class="form-control" asp-for="UserName" placeholder="Letters, numbers and underscores only" required>
                         <span asp-validation-for="UserName" class="text-danger small"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Email" class="form-label">Correo Electrónico *</label>
-                        <input type="email" class="form-control" asp-for="Email" placeholder="ejemplo@correo.com" required>
+                        <label asp-for="Email" class="form-label">Email Address *</label>
+                        <input type="email" class="form-control" asp-for="Email" placeholder="example@email.com" required>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
 
                     <div class="form-group">
-                        <label asp-for="Password" class="form-label">Contraseña *</label>
-                        <input type="password" class="form-control" asp-for="Password" placeholder="Mínimo 8 caracteres" required>
+                        <label asp-for="Password" class="form-label">Password *</label>
+                        <input type="password" class="form-control" asp-for="Password" placeholder="Minimum 8 characters" required>
                         <span asp-validation-for="Password" class="text-danger small"></span>
-                        <small class="form-text text-muted">
-                            La contraseña debe contener mayúsculas, minúsculas, números y caracteres especiales.
-                        </small>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirmPassword" class="form-label">Confirmar Contraseña *</label>
+                        <label for="confirmPassword" class="form-label">Confirm Password *</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                               placeholder="Repita la contraseña" required>
+                               placeholder="Repeat the password" required>
                     </div>
 
                     <button type="submit" class="btn btn-primary btn-login">
-                        <i class="bi bi-person-plus-fill"></i> Registrarse
+                        <i class="bi bi-person-plus-fill"></i> Sign Up
                     </button>
                 </form>
 
                 <div class="login-links">
-                    <span>¿Ya tiene una cuenta? <a href="@Url.Action("Index")">Iniciar Sesión</a></span>
+                    <span>Already have an account? <a href="@Url.Action("Index")">Log In</a></span>
                 </div>
             </div>
         </div>
@@ -99,14 +96,14 @@
 
     <script>
         $(document).ready(function () {
-            // Validación de confirmación de contraseña
+            // Password confirmation validation
             $('form').submit(function (e) {
                 var password = $('#Password').val();
                 var confirmPassword = $('#confirmPassword').val();
 
                 if (password !== confirmPassword) {
                     e.preventDefault();
-                    alert('Las contraseñas no coinciden.');
+                    alert('Passwords do not match.');
                     return false;
                 }
                 return true;

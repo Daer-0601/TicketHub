@@ -14,7 +14,7 @@ namespace ProyectoFinal.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Credenciales de Gmail
+
         private const string EmailFrom = "andrescaleraa7@gmail.com";
         private const string EmailPassword = "aytu wnvj vyqm pntn";
 
@@ -50,26 +50,26 @@ namespace ProyectoFinal.Controllers
 
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Usuario o contraseña incorrectos.");
+                    ModelState.AddModelError(string.Empty, "Invalid username or password.");
                     return View(loginViewModel);
                 }
 
-                // Verificar si debe cambiar contraseña
+               
                 if (user.MustChangePassword)
                 {
-                    // Guardar en sesión para la página de cambio
+               
                     HttpContext.Session.SetInt32("ChangePasswordUserId", user.UserId);
                     HttpContext.Session.SetString("ChangePasswordUserName", user.UserName);
                     return RedirectToAction("ChangePassword");
                 }
 
-                // Login normal
+               
                 await SignInUser(user);
                 return RedirectToDashboard(user.Role);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Error al iniciar sesión. Intente nuevamente.");
+                ModelState.AddModelError(string.Empty, "Error logging in. Please try again.");
                 return View(loginViewModel);
             }
         }
@@ -106,13 +106,13 @@ namespace ProyectoFinal.Controllers
 
             if (string.IsNullOrEmpty(newPassword) || newPassword.Length < 8)
             {
-                ModelState.AddModelError(string.Empty, "La contraseña debe tener al menos 8 caracteres.");
+                ModelState.AddModelError(string.Empty, "Password must be at least 8 characters long.");
                 return View();
             }
 
             if (newPassword != confirmPassword)
             {
-                ModelState.AddModelError(string.Empty, "Las contraseñas no coinciden.");
+                ModelState.AddModelError(string.Empty, "Passwords do not match.");
                 return View();
             }
 
@@ -124,23 +124,22 @@ namespace ProyectoFinal.Controllers
                     return RedirectToAction("Index");
                 }
 
-                // Actualizar contraseña y quitar la marca
+                
                 user.Password = newPassword;
                 user.MustChangePassword = false;
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
 
-                // Limpiar sesión temporal
                 HttpContext.Session.Remove("ChangePasswordUserId");
                 HttpContext.Session.Remove("ChangePasswordUserName");
 
-                // Iniciar sesión automáticamente
+                
                 await SignInUser(user);
                 return RedirectToDashboard(user.Role);
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Error al cambiar la contraseña. Intente nuevamente.");
+                ModelState.AddModelError(string.Empty, "Error changing password. Please try again.");
                 return View();
             }
         }
@@ -163,7 +162,7 @@ namespace ProyectoFinal.Controllers
 
             if (newUser.Password != confirmPassword)
             {
-                ModelState.AddModelError(string.Empty, "Las contraseñas no coinciden.");
+                ModelState.AddModelError(string.Empty, "Passwords do not match.");
                 return View(newUser);
             }
 
@@ -175,9 +174,9 @@ namespace ProyectoFinal.Controllers
                 if (existingUser != null)
                 {
                     if (existingUser.UserName == newUser.UserName)
-                        ModelState.AddModelError(string.Empty, "El nombre de usuario ya está en uso.");
+                        ModelState.AddModelError(string.Empty, "Username is already in use.");
                     if (existingUser.Email == newUser.Email)
-                        ModelState.AddModelError(string.Empty, "El correo electrónico ya está registrado.");
+                        ModelState.AddModelError(string.Empty, "Email address is already registered.");
                     return View(newUser);
                 }
 
@@ -186,12 +185,12 @@ namespace ProyectoFinal.Controllers
                 _context.Users.Add(newUser);
                 await _context.SaveChangesAsync();
 
-                TempData["SuccessMessage"] = "Registro exitoso. Ahora puede iniciar sesión.";
+                TempData["SuccessMessage"] = "Registration successful. You can now log in.";
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Error al registrar el usuario. Intente nuevamente.");
+                ModelState.AddModelError(string.Empty, "Error registering user. Please try again.");
                 return View(newUser);
             }
         }
@@ -209,7 +208,7 @@ namespace ProyectoFinal.Controllers
         {
             if (string.IsNullOrEmpty(email))
             {
-                ModelState.AddModelError(string.Empty, "Por favor ingrese su correo electrónico.");
+                ModelState.AddModelError(string.Empty, "Please enter your email address.");
                 return View();
             }
 
@@ -219,30 +218,29 @@ namespace ProyectoFinal.Controllers
 
                 if (user != null)
                 {
-                    // Generar contraseña aleatoria
-                    var nuevaPassword = GenerarPassword();
+              
+                    var newPassword = GeneratePassword();
 
-                    // Actualizar en BD y marcar para cambio obligatorio
-                    user.Password = nuevaPassword;
-                    user.MustChangePassword = true;  // <-- Obligar cambio en próximo login
+                    user.Password = newPassword;
+                    user.MustChangePassword = true;  
                     _context.Users.Update(user);
                     await _context.SaveChangesAsync();
 
-                    // Enviar por email
-                    await EnviarEmailNuevaPassword(email, user.UserName, nuevaPassword);
+     
+                    await SendNewPasswordEmail(email, user.UserName, newPassword);
 
-                    TempData["SuccessMessage"] = "Se ha enviado una nueva contraseña a su correo electrónico.";
+                    TempData["SuccessMessage"] = "A new password has been sent to your email address.";
                 }
                 else
                 {
-                    TempData["InfoMessage"] = "Si el email existe, recibirá una nueva contraseña.";
+                    TempData["InfoMessage"] = "If the email exists, you will receive a new password.";
                 }
 
                 return RedirectToAction("Index");
             }
             catch (Exception)
             {
-                ModelState.AddModelError(string.Empty, "Error al procesar la solicitud. Intente nuevamente.");
+                ModelState.AddModelError(string.Empty, "Error processing request. Please try again.");
                 return View();
             }
         }
@@ -261,13 +259,10 @@ namespace ProyectoFinal.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Clear();
 
-            TempData["SuccessMessage"] = "Sesión cerrada exitosamente.";
+            TempData["SuccessMessage"] = "Successfully logged out.";
             return RedirectToAction("Index", "Login");
         }
 
-        // =============================================
-        // MÉTODOS PRIVADOS
-        // =============================================
 
         private async Task SignInUser(User user)
         {
@@ -299,7 +294,7 @@ namespace ProyectoFinal.Controllers
             HttpContext.Session.SetInt32("UserId", user.UserId);
         }
 
-        private string GenerarPassword()
+        private string GeneratePassword()
         {
             const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$";
             var random = new Random();
@@ -307,12 +302,12 @@ namespace ProyectoFinal.Controllers
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
-        private async Task EnviarEmailNuevaPassword(string emailDestino, string nombreUsuario, string nuevaPassword)
+        private async Task SendNewPasswordEmail(string destinationEmail, string userName, string newPassword)
         {
             var mail = new MailMessage();
             mail.From = new MailAddress(EmailFrom, "TicketHub");
-            mail.To.Add(emailDestino);
-            mail.Subject = "Nueva Contraseña - TicketHub";
+            mail.To.Add(destinationEmail);
+            mail.Subject = "New Password - TicketHub";
             mail.IsBodyHtml = true;
             mail.Body = $@"
 <!DOCTYPE html>
@@ -337,12 +332,12 @@ namespace ProyectoFinal.Controllers
             <h1>🎫 TicketHub</h1>
         </div>
         <div class='content'>
-            <p>Hola <strong>{nombreUsuario}</strong>,</p>
-            <p>Tu nueva contraseña temporal es:</p>
+            <p>Hello <strong>{userName}</strong>,</p>
+            <p>Your new temporary password is:</p>
             <div class='password-box'>
-                <span class='password'>{nuevaPassword}</span>
+                <span class='password'>{newPassword}</span>
             </div>
-            <p class='info'>ℹ️ Al iniciar sesión, se te pedirá crear una nueva contraseña personalizada.</p>
+            <p class='info'>ℹ️ When you log in, you will be asked to create a new personalized password.</p>
         </div>
         <div class='footer'>
             © 2025 TicketHub

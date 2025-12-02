@@ -1,6 +1,6 @@
 @model IEnumerable<ProyectoFinal.Models.Event>
 @{
-    ViewData["Title"] = "Reportes de Ventas";
+    ViewData["Title"] = "Sales Reports";
     var totalSold = (int)ViewBag.TotalTicketsSold;
     var totalScanned = (int)ViewBag.TotalTicketsScanned;
     var totalRevenue = (decimal)ViewBag.TotalRevenue;
@@ -12,17 +12,17 @@
     <!-- Page Header -->
     <div class="page-header">
         <h1 class="page-title">
-            <i class="bi bi-bar-chart-fill"></i> Reportes de Ventas e Ingresos
+            <i class="bi bi-bar-chart-fill"></i> Sales and Revenue Reports
         </h1>
         <a asp-action="Index" class="btn-admin btn-admin-outline">
-            <i class="bi bi-arrow-left"></i> Volver a Eventos
+            <i class="bi bi-arrow-left"></i> Back to Events
         </a>
     </div>
 
-    <!-- Tabla de eventos -->
+    <!-- Events Table -->
     <div class="data-card">
         <div class="data-card-header">
-            <h5><i class="bi bi-calendar-event me-2"></i> Detalle por Evento</h5>
+            <h5><i class="bi bi-calendar-event me-2"></i> Detail by Event</h5>
         </div>
         <div class="data-card-body">
             @if (Model.Any())
@@ -31,14 +31,14 @@
                     <table class="admin-table">
                         <thead>
                             <tr>
-                                <th>Evento</th>
-                                <th>Fecha</th>
-                                <th class="text-center">Vendidas</th>
-                                <th class="text-center">Ingresadas</th>
-                                <th class="text-center">Pendientes</th>
-                                <th class="text-center">% Ingreso</th>
-                                <th class="text-end">Ingresos</th>
-                                <th class="text-center">Acciones</th>
+                                <th>Event</th>
+                                <th>Date</th>
+                                <th class="text-center">Sold</th>
+                                <th class="text-center">Entered</th>
+                                <th class="text-center">Pending</th>
+                                <th class="text-center">% Entry</th>
+                                <th class="text-end">Revenue</th>
+                                <th class="text-center">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,7 +77,7 @@
                                         </span>
                                         @if (isPast)
                                         {
-                                            <br><span class="badge" style="background: #737373; color: #fff; font-size: 0.7rem;">Finalizado</span>
+                                            <br><span class="badge" style="background: #737373; color: #fff; font-size: 0.7rem;">Finished</span>
                                         }
                                     </td>
                                     <td class="text-center">
@@ -107,8 +107,8 @@
                                         <strong style="color: #22c55e;">$@eventRevenue.ToString("N0")</strong>
                                     </td>
                                     <td class="text-center">
-                                        <a asp-action="EventReport" asp-route-id="@evt.EventId" class="btn-admin btn-admin-info" title="Ver detalle">
-                                            <i class="bi bi-eye"></i> Detalle
+                                        <a asp-action="EventReport" asp-route-id="@evt.EventId" class="btn-admin btn-admin-info" title="View detail">
+                                            <i class="bi bi-eye"></i> Detail
                                         </a>
                                     </td>
                                 </tr>
@@ -116,7 +116,7 @@
                         </tbody>
                         <tfoot style="background: #fafafa; font-weight: 600;">
                             <tr>
-                                <td colspan="2" class="text-end">TOTALES:</td>
+                                <td colspan="2" class="text-end">TOTALS:</td>
                                 <td class="text-center">@totalSold</td>
                                 <td class="text-center">@totalScanned</td>
                                 <td class="text-center">@pendingEntry</td>
@@ -132,8 +132,8 @@
             {
                 <div class="empty-state">
                     <i class="bi bi-bar-chart"></i>
-                    <h4>No hay datos de ventas</h4>
-                    <p>Aún no se han vendido entradas.</p>
+                    <h4>No sales data</h4>
+                    <p>No tickets have been sold yet.</p>
                 </div>
             }
         </div>

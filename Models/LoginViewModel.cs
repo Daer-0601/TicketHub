@@ -4,14 +4,13 @@ namespace ProyectoFinal.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "El usuario es requerido.")]
-        [Display(Name = "Usuario")]
+        [Required(ErrorMessage = "Username is required.")]
+        [Display(Name = "Username")]
         public string UserName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "La contraseña es requerida.")]
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Contraseña")]
+        [Display(Name = "Password")]
         public string Password { get; set; } = string.Empty;
     }
 }
-

@@ -63,6 +63,12 @@ namespace ProyectoFinal.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Event evt, IFormFile? imageFile)
         {
+            // Validate date is not in the past
+            if (evt.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("Date", "Event date cannot be in the past.");
+            }
+
             if (evt.Sectors != null)
             {
                 evt.Sectors = evt.Sectors
@@ -115,7 +121,13 @@ namespace ProyectoFinal.Controllers
             if (id != evt.EventId)
                 return NotFound();
 
-            // Filtrar sectores válidos
+            // Validate date is not in the past
+            if (evt.Date < DateTime.Today)
+            {
+                ModelState.AddModelError("Date", "Event date cannot be in the past.");
+            }
+
+            // Filter valid sectors
             evt.Sectors = evt.Sectors?
                 .Where(s => !string.IsNullOrWhiteSpace(s.Name) && s.Price > 0 && s.Capacity > 0)
                 .ToList();
@@ -124,7 +136,7 @@ namespace ProyectoFinal.Controllers
             {
                 try
                 {
-                    // Procesar nueva imagen si se sube
+                    // Process new image if uploaded
                     if (newImage != null && newImage.Length > 0)
                     {
                         string uploadsFolder = Path.Combine(_env.WebRootPath, "images/events");
@@ -139,7 +151,7 @@ namespace ProyectoFinal.Controllers
                         evt.ImageUrl = "/images/events/" + uniqueName;
                     }
 
-                    // Actualizar solo campos del evento
+                    // Update event fields only
                     var existingEvent = await _context.Events
                         .Include(e => e.Sectors)
                         .FirstOrDefaultAsync(e => e.EventId == id);
@@ -154,7 +166,7 @@ namespace ProyectoFinal.Controllers
                     if (!string.IsNullOrEmpty(evt.ImageUrl))
                         existingEvent.ImageUrl = evt.ImageUrl;
 
-                    // Manejar sectores
+                    // Handle sectors
                     var sectorsToRemove = existingEvent.Sectors
                         .Where(s => !evt.Sectors.Any(x => x.SectorId == s.SectorId))
                         .ToList();
@@ -246,7 +258,7 @@ namespace ProyectoFinal.Controllers
                 .OrderByDescending(e => e.Date)
                 .ToListAsync();
 
-            // Calcular estadísticas generales
+            // Calculate general statistics
             var totalTicketsSold = await _context.Tickets.CountAsync();
             var totalTicketsScanned = await _context.Tickets.CountAsync(t => t.ScannedAt != null);
             var totalRevenue = await _context.Tickets.SumAsync(t => t.Price);

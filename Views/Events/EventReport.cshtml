@@ -1,6 +1,6 @@
 @model ProyectoFinal.Models.Event
 @{
-    ViewData["Title"] = "Reporte - " + Model.Name;
+    ViewData["Title"] = "Report - " + Model.Name;
     var totalTickets = Model.Tickets?.Count ?? 0;
     var scannedTickets = Model.Tickets?.Count(t => t.ScannedAt != null) ?? 0;
     var pendingTickets = totalTickets - scannedTickets;
@@ -15,7 +15,7 @@
                 <i class="bi bi-graph-up"></i> @Model.Name
             </h1>
             <p class="text-muted mb-0">
-                <i class="bi bi-calendar3 me-1"></i> @Model.Date.ToString("dddd, dd MMMM yyyy", new System.Globalization.CultureInfo("es-ES"))
+                <i class="bi bi-calendar3 me-1"></i> @Model.Date.ToString("dddd, dd MMMM yyyy", new System.Globalization.CultureInfo("en-US"))
                 <span class="mx-2">|</span>
                 <i class="bi bi-clock me-1"></i> @Model.Time.ToString(@"hh\:mm") hrs
                 <span class="mx-2">|</span>
@@ -23,11 +23,11 @@
             </p>
         </div>
         <a asp-action="Reports" class="btn-admin btn-admin-outline">
-            <i class="bi bi-arrow-left"></i> Volver a Reportes
+            <i class="bi bi-arrow-left"></i> Back to Reports
         </a>
     </div>
 
-    <!-- Stats del Evento -->
+    <!-- Event Stats -->
     <div class="stats-row">
         <div class="stat-card">
             <div class="stat-icon" style="background: #e31837;">
@@ -35,7 +35,7 @@
             </div>
             <div class="stat-content">
                 <h3>@totalTickets</h3>
-                <p>Entradas Vendidas</p>
+                <p>Tickets Sold</p>
             </div>
         </div>
         <div class="stat-card">
@@ -44,7 +44,7 @@
             </div>
             <div class="stat-content">
                 <h3>@scannedTickets</h3>
-                <p>Personas Ingresadas</p>
+                <p>People Entered</p>
             </div>
         </div>
         <div class="stat-card">
@@ -53,7 +53,7 @@
             </div>
             <div class="stat-content">
                 <h3>@pendingTickets</h3>
-                <p>Pendientes</p>
+                <p>Pending</p>
             </div>
         </div>
         <div class="stat-card">
@@ -62,15 +62,15 @@
             </div>
             <div class="stat-content">
                 <h3>$@totalRevenue.ToString("N0")</h3>
-                <p>Ingresos Totales</p>
+                <p>Total Revenue</p>
             </div>
         </div>
     </div>
 
-    <!-- Ventas por Sector -->
+    <!-- Sales by Sector -->
     <div class="data-card">
         <div class="data-card-header">
-            <h5><i class="bi bi-grid-3x3-gap me-2"></i> Ventas por Sector</h5>
+            <h5><i class="bi bi-grid-3x3-gap me-2"></i> Sales by Sector</h5>
         </div>
         <div class="data-card-body">
             @if (Model.Sectors != null && Model.Sectors.Any())
@@ -97,27 +97,27 @@
                                 <div class="row text-center mb-2" style="font-size: 0.85rem;">
                                     <div class="col-4">
                                         <div class="fw-bold" style="color: #e31837;">@sectorTickets</div>
-                                        <small class="text-muted">Vendidas</small>
+                                        <small class="text-muted">Sold</small>
                                     </div>
                                     <div class="col-4">
                                         <div class="fw-bold" style="color: #22c55e;">@sectorScanned</div>
-                                        <small class="text-muted">Ingresados</small>
+                                        <small class="text-muted">Entered</small>
                                     </div>
                                     <div class="col-4">
                                         <div class="fw-bold">@sector.Capacity</div>
-                                        <small class="text-muted">Capacidad</small>
+                                        <small class="text-muted">Capacity</small>
                                     </div>
                                 </div>
                                 
                                 <div class="mb-1">
-                                    <small class="text-muted">Ocupación: @sectorPercentage.ToString("F0")%</small>
+                                    <small class="text-muted">Occupancy: @sectorPercentage.ToString("F0")%</small>
                                 </div>
                                 <div class="progress" style="height: 8px; border-radius: 4px; background: #e5e5e5;">
                                     <div class="progress-bar" style="width: @sectorPercentage%; background: #e31837; border-radius: 4px;"></div>
                                 </div>
                                 
                                 <div class="mt-2 mb-1">
-                                    <small class="text-muted">Ingreso: @sectorScanPercentage.ToString("F0")%</small>
+                                    <small class="text-muted">Entry: @sectorScanPercentage.ToString("F0")%</small>
                                 </div>
                                 <div class="progress" style="height: 8px; border-radius: 4px; background: #e5e5e5;">
                                     <div class="progress-bar" style="width: @sectorScanPercentage%; background: #22c55e; border-radius: 4px;"></div>
@@ -131,7 +131,7 @@
             {
                 <div class="text-center text-muted py-4">
                     <i class="bi bi-grid-3x3" style="font-size: 3rem;"></i>
-                    <p class="mt-2">No hay sectores configurados</p>
+                    <p class="mt-2">No sectors configured</p>
                 </div>
             }
         </div>

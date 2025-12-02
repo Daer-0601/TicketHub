@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/client-events.css" asp-append-version="true" />
     <style>
-        /* Client Navbar - Negro, Rojo, Blanco */
+        /* Client Navbar - Black, Red, White */
         .client-navbar {
             background: #000000;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
@@ -82,7 +82,7 @@
             padding-top: 70px;
         }
         
-        /* Client Footer - Negro, Rojo, Blanco */
+        /* Client Footer - Black, Red, White */
         .client-footer {
             background: #000000;
             color: #fff;
@@ -171,7 +171,7 @@
 </head>
 <body>
     @{
-        var userName = User.Identity?.Name ?? "Usuario";
+        var userName = User.Identity?.Name ?? "User";
         var isAuthenticated = User.Identity?.IsAuthenticated == true;
     }
 
@@ -190,7 +190,7 @@
                     <li class="nav-item">
                         <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")" 
                            asp-controller="ClientEvents" asp-action="Index">
-                            <i class="bi bi-calendar-heart me-1"></i> Eventos
+                            <i class="bi bi-calendar-heart me-1"></i> Events
                         </a>
                     </li>
                 </ul>
@@ -209,14 +209,14 @@
                             <ul class="dropdown-menu dropdown-menu-end">
                                 <li class="dropdown-header">
                                     <strong>@userName</strong>
-                                    <br><small class="text-muted">Cliente</small>
+                                    <br><small class="text-muted">Client</small>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form asp-controller="Login" asp-action="Logout" method="post">
                                         @Html.AntiForgeryToken()
                                         <button type="submit" class="dropdown-item text-danger">
-                                            <i class="bi bi-box-arrow-right me-2"></i> Cerrar Sesión
+                                            <i class="bi bi-box-arrow-right me-2"></i> Log Out
                                         </button>
                                     </form>
                                 </li>
@@ -228,10 +228,10 @@
                 {
                     <div class="d-flex gap-2">
                         <a asp-controller="Login" asp-action="Index" class="btn btn-outline-light">
-                            <i class="bi bi-box-arrow-in-right me-1"></i> Ingresar
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Log In
                         </a>
                         <a asp-controller="Login" asp-action="Register" class="btn btn-danger">
-                            <i class="bi bi-person-plus me-1"></i> Registrarse
+                            <i class="bi bi-person-plus me-1"></i> Sign Up
                         </a>
                     </div>
                 }
@@ -262,23 +262,23 @@
                 <div class="footer-section">
                     <h5><i class="bi bi-ticket-perforated me-2"></i>TicketHub</h5>
                     <p style="color: rgba(255,255,255,0.7);">
-                        Tu plataforma de confianza para comprar entradas a los mejores eventos.
+                        Your trusted platform for buying tickets to the best events.
                     </p>
                    
                 </div>
               
               
                 <div class="footer-section">
-                    <h5>Contacto</h5>
+                    <h5>Contact</h5>
                     <ul>
-                        <li><i class="bi bi-envelope me-2"></i>TicketHubsoporte@gmail.com</li>
+                        <li><i class="bi bi-envelope me-2"></i>TicketHubsupport@gmail.com</li>
                         <li><i class="bi bi-telephone me-2"></i>+591 69500556</li>
                         <li><i class="bi bi-geo-alt me-2"></i>Bolivia</li>
                     </ul>   
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="mb-0">&copy; 2025 TicketHub. Todos los derechos reservados.</p>
+                <p class="mb-0">&copy; 2025 TicketHub. All rights reserved.</p>
             </div>
         </div>
     </footer>

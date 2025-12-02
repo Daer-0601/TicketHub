@@ -33,19 +33,19 @@ namespace ProyectoFinal.Controllers
         {
             if (string.IsNullOrEmpty(qrCode))
             {
-                return Json(new { success = false, message = "Código QR vacío" });
+                return Json(new { success = false, message = "Empty QR code" });
             }
 
             try
             {
-                // Parsear el código QR (formato: "EventId-TicketId")
+                // Parse the QR code (format: "EventId-TicketId")
                 var parts = qrCode.Split('-');
                 if (parts.Length != 2 || !int.TryParse(parts[0], out int qrEventId) || !int.TryParse(parts[1], out int ticketId))
                 {
-                    return Json(new { success = false, message = "Código QR inválido", status = "invalid" });
+                    return Json(new { success = false, message = "Invalid QR code", status = "invalid" });
                 }
 
-                // Buscar el ticket
+                // Find the ticket
                 var ticket = await _context.Tickets
                     .Include(t => t.Event)
                     .Include(t => t.Sector)
@@ -53,15 +53,15 @@ namespace ProyectoFinal.Controllers
 
                 if (ticket == null)
                 {
-                    return Json(new { success = false, message = "Ticket no encontrado", status = "notfound" });
+                    return Json(new { success = false, message = "Ticket not found", status = "notfound" });
                 }
 
-                // Verificar si el evento del QR coincide con el seleccionado
+                // Check if the QR event matches the selected one
                 if (qrEventId != eventId)
                 {
                     return Json(new { 
                         success = false, 
-                        message = $"Este ticket pertenece a otro evento (Evento ID: {qrEventId})", 
+                        message = $"This ticket belongs to another event (Event ID: {qrEventId})", 
                         status = "wrongevent",
                         ticketInfo = new {
                             ticketId = ticket.TicketId,
@@ -71,12 +71,12 @@ namespace ProyectoFinal.Controllers
                     });
                 }
 
-                // Verificar si el sector del ticket coincide con el seleccionado
+                // Check if the ticket sector matches the selected one
                 if (ticket.SectorId != sectorId)
                 {
                     return Json(new { 
                         success = false, 
-                        message = $"Este ticket es para otro sector. Sector del ticket: {ticket.Sector?.Name ?? "N/A"}", 
+                        message = $"This ticket is for another sector. Ticket sector: {ticket.Sector?.Name ?? "N/A"}", 
                         status = "wrongsector",
                         ticketInfo = new {
                             ticketId = ticket.TicketId,
@@ -87,12 +87,12 @@ namespace ProyectoFinal.Controllers
                     });
                 }
 
-                // Verificar si el ticket es válido
+                // Check if the ticket is valid
                 if (!ticket.IsValid)
                 {
                     return Json(new { 
                         success = false, 
-                        message = "Ticket inválido", 
+                        message = "Invalid ticket", 
                         status = "invalid",
                         ticketInfo = new {
                             ticketId = ticket.TicketId,
@@ -101,12 +101,12 @@ namespace ProyectoFinal.Controllers
                     });
                 }
 
-                // Verificar si ya fue escaneado
+                // Check if already scanned
                 if (ticket.ScannedAt.HasValue)
                 {
                     return Json(new { 
                         success = false, 
-                        message = $"Este ticket ya fue escaneado el {ticket.ScannedAt.Value:dd/MM/yyyy HH:mm:ss}", 
+                        message = $"This ticket was already scanned on {ticket.ScannedAt.Value:MM/dd/yyyy HH:mm:ss}", 
                         status = "alreadyscanned",
                         ticketInfo = new {
                             ticketId = ticket.TicketId,
@@ -115,14 +115,14 @@ namespace ProyectoFinal.Controllers
                     });
                 }
 
-                // Marcar como escaneado
+                // Mark as scanned
                 ticket.ScannedAt = DateTime.Now;
                 _context.Tickets.Update(ticket);
                 await _context.SaveChangesAsync();
 
                 return Json(new { 
                     success = true, 
-                    message = "Entrada válida y escaneada correctamente", 
+                    message = "Valid ticket scanned successfully", 
                     status = "valid",
                     ticketInfo = new {
                         ticketId = ticket.TicketId,
@@ -135,7 +135,7 @@ namespace ProyectoFinal.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"Error al procesar: {ex.Message}", status = "error" });
+                return Json(new { success = false, message = $"Processing error: {ex.Message}", status = "error" });
             }
         }
 
@@ -153,4 +153,3 @@ namespace ProyectoFinal.Controllers
         }
     }
 }
-

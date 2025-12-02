@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ProyectoFinal.Models.User>
 @{
-    ViewData["Title"] = "Gestión de Usuarios";
+    ViewData["Title"] = "User Management";
     var totalUsers = Model.Count();
     var admins = Model.Count(u => u.Role == "Admin");
     var workers = Model.Count(u => u.Role == "Worker");
@@ -11,10 +11,10 @@
     <!-- Page Header -->
     <div class="page-header">
         <h1 class="page-title">
-            <i class="bi bi-people"></i> Gestión de Usuarios
+            <i class="bi bi-people"></i> User Management
         </h1>
         <a asp-action="Create" class="btn-admin btn-admin-success">
-            <i class="bi bi-person-plus"></i> Crear Usuario
+            <i class="bi bi-person-plus"></i> Create User
         </a>
     </div>
 
@@ -26,7 +26,7 @@
             </div>
             <div class="stat-content">
                 <h3>@totalUsers</h3>
-                <p>Total Usuarios</p>
+                <p>Total Users</p>
             </div>
         </div>
         <div class="stat-card">
@@ -35,7 +35,7 @@
             </div>
             <div class="stat-content">
                 <h3>@admins</h3>
-                <p>Administradores</p>
+                <p>Administrators</p>
             </div>
         </div>
         <div class="stat-card">
@@ -44,7 +44,7 @@
             </div>
             <div class="stat-content">
                 <h3>@workers</h3>
-                <p>Trabajadores</p>
+                <p>Workers</p>
             </div>
         </div>
         <div class="stat-card">
@@ -53,7 +53,7 @@
             </div>
             <div class="stat-content">
                 <h3>@clients</h3>
-                <p>Clientes</p>
+                <p>Clients</p>
             </div>
         </div>
     </div>
@@ -61,8 +61,8 @@
     <!-- Users Table -->
     <div class="data-card">
         <div class="data-card-header">
-            <h5><i class="bi bi-table me-2"></i> Lista de Usuarios</h5>
-            <span class="badge bg-light text-dark">@totalUsers registrados</span>
+            <h5><i class="bi bi-table me-2"></i> User List</h5>
+            <span class="badge bg-light text-dark">@totalUsers registered</span>
         </div>
         <div class="data-card-body">
             @if (Model.Any())
@@ -72,10 +72,10 @@
                         <thead>
                             <tr>
                                 <th><i class="bi bi-hash"></i> ID</th>
-                                <th><i class="bi bi-person"></i> Usuario</th>
+                                <th><i class="bi bi-person"></i> Username</th>
                                 <th><i class="bi bi-envelope"></i> Email</th>
-                                <th><i class="bi bi-shield"></i> Rol</th>
-                                <th><i class="bi bi-gear"></i> Acciones</th>
+                                <th><i class="bi bi-shield"></i> Role</th>
+                                <th><i class="bi bi-gear"></i> Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,10 +99,8 @@
                                     <td>
                                         <div class="d-flex gap-2">
                                            
-                                            <a asp-action="Edit" asp-route-id="@item.UserId" class="btn-admin btn-admin-warning" title="Editar">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="btn-admin btn-admin-danger" title="Eliminar">
+                                          
+                                            <a asp-action="Delete" asp-route-id="@item.UserId" class="btn-admin btn-admin-danger" title="Delete">
                                                 <i class="bi bi-trash"></i>
                                             </a>
                                         </div>
@@ -117,10 +115,10 @@
             {
                 <div class="empty-state">
                     <i class="bi bi-people"></i>
-                    <h4>No hay usuarios registrados</h4>
-                    <p>Comienza creando el primer usuario</p>
+                    <h4>No users registered</h4>
+                    <p>Start by creating the first user</p>
                     <a asp-action="Create" class="btn-admin btn-admin-success mt-3">
-                        <i class="bi bi-person-plus"></i> Crear Usuario
+                        <i class="bi bi-person-plus"></i> Create User
                     </a>
                 </div>
             }

@@ -30,9 +30,7 @@ namespace ProyectoFinal.Controllers
             _context = context;
         }
 
-        // =============================================
-        // 1. LISTA DE EVENTOS
-        // =============================================
+    
         public async Task<IActionResult> Index()
         {
             var events = await _context.Events
@@ -42,9 +40,7 @@ namespace ProyectoFinal.Controllers
             return View(events);
         }
 
-        // =============================================
-        // 2. DETALLES DEL EVENTO
-        // =============================================
+   
         public async Task<IActionResult> Details(int id)
         {
             var evento = await _context.Events
@@ -54,21 +50,19 @@ namespace ProyectoFinal.Controllers
             if (evento == null)
                 return NotFound();
 
-            // Calcular disponibilidad por sector
-            var disponibilidad = new Dictionary<int, int>();
+           
+            var availability = new Dictionary<int, int>();
             foreach (var sector in evento.Sectors)
             {
-                int vendidos = await _context.Tickets.CountAsync(t => t.SectorId == sector.SectorId);
-                disponibilidad[sector.SectorId] = sector.Capacity - vendidos;
+                int sold = await _context.Tickets.CountAsync(t => t.SectorId == sector.SectorId);
+                availability[sector.SectorId] = sector.Capacity - sold;
             }
-            ViewBag.Disponibilidad = disponibilidad;
+            ViewBag.Disponibilidad = availability;
 
             return View(evento);
         }
 
-        // =============================================
-        // 3. PROCESO DE COMPRA
-        // =============================================
+
         [HttpPost]
         public async Task<IActionResult> Buy(int eventId, Dictionary<int, int> cantidades, string email)
         {
@@ -79,41 +73,39 @@ namespace ProyectoFinal.Controllers
             if (evento == null)
                 return NotFound();
 
-            // Validar disponibilidad de entradas
             foreach (var item in cantidades)
             {
                 int sectorId = item.Key;
-                int cantidad = item.Value;
+                int quantity = item.Value;
 
-                if (cantidad <= 0) continue;
+                if (quantity <= 0) continue;
 
                 var sector = await _context.Sectors.FindAsync(sectorId);
                 if (sector == null) continue;
 
-                // Contar tickets ya vendidos para este sector
-                int ticketsVendidos = await _context.Tickets.CountAsync(t => t.SectorId == sectorId);
-                int disponibles = sector.Capacity - ticketsVendidos;
+                int ticketsSold = await _context.Tickets.CountAsync(t => t.SectorId == sectorId);
+                int available = sector.Capacity - ticketsSold;
 
-                if (cantidad > disponibles)
+                if (quantity > available)
                 {
-                    TempData["ErrorMessage"] = $"No hay suficientes entradas en {sector.Name}. Disponibles: {disponibles}";
+                    TempData["ErrorMessage"] = $"Not enough tickets in {sector.Name}. Available: {available}";
                     return RedirectToAction("Details", new { id = eventId });
                 }
             }
 
-            List<Ticket> nuevosTickets = new();
+            List<Ticket> newTickets = new();
 
             foreach (var item in cantidades)
             {
                 int sectorId = item.Key;
-                int cantidad = item.Value;
+                int quantity = item.Value;
 
-                if (cantidad <= 0) continue;
+                if (quantity <= 0) continue;
 
                 var sector = await _context.Sectors.FindAsync(sectorId);
                 if (sector == null) continue;
 
-                for (int i = 0; i < cantidad; i++)
+                for (int i = 0; i < quantity; i++)
                 {
                     Ticket ticket = new Ticket
                     {
@@ -125,37 +117,32 @@ namespace ProyectoFinal.Controllers
                     _context.Tickets.Add(ticket);
                     await _context.SaveChangesAsync();
 
-                    // Generar QR
-                    ticket.QrCode = GenerarQR($"{evento.EventId}-{ticket.TicketId}");
+                    ticket.QrCode = GenerateQR($"{evento.EventId}-{ticket.TicketId}");
                     ticket.Sector = sector;
 
-                    nuevosTickets.Add(ticket);
+                    newTickets.Add(ticket);
                 }
             }
 
             await _context.SaveChangesAsync();
 
-            EnviarTicketsPorEmail(email, nuevosTickets, evento);
+            SendTicketsByEmail(email, newTickets, evento);
 
             return RedirectToAction("Success");
         }
 
-        // =============================================
-        // 4. PÁGINA DE ÉXITO
-        // =============================================
+   
         public IActionResult Success()
         {
             return View();
         }
 
 
-        // =============================================
-        // GENERAR QR EN BASE64
-        // =============================================
-        private string GenerarQR(string texto)
+
+        private string GenerateQR(string text)
         {
             QRCodeGenerator qr = new QRCodeGenerator();
-            QRCodeData data = qr.CreateQrCode(texto, QRCodeGenerator.ECCLevel.Q);
+            QRCodeData data = qr.CreateQrCode(text, QRCodeGenerator.ECCLevel.Q);
             PngByteQRCode png = new PngByteQRCode(data);
             byte[] img = png.GetGraphic(10);
 
@@ -164,11 +151,8 @@ namespace ProyectoFinal.Controllers
 
 
 
-        // =============================================
-        // GENERAR PDF PARA ENVIAR EN EL EMAIL
-        // =============================================
 
-        public byte[] GenerarPDFEntradas(Event evento, List<Ticket> tickets)
+        public byte[] GenerateTicketsPDF(Event evento, List<Ticket> tickets)
         {
             using MemoryStream ms = new MemoryStream();
 
@@ -177,17 +161,17 @@ namespace ProyectoFinal.Controllers
             Document document = new Document(pdf, PageSize.A4);
             document.SetMargins(40, 40, 40, 40);
 
-            // Colores
-            Color headerColor = new DeviceRgb(41, 128, 185); // Azul
-            Color borderColor = new DeviceRgb(200, 200, 200); // Gris claro
-            Color textColor = new DeviceRgb(44, 62, 80); // Gris oscuro
-            Color successColor = new DeviceRgb(39, 174, 96); // Verde
 
-            // Fuente base
+            Color headerColor = new DeviceRgb(41, 128, 185); 
+            Color borderColor = new DeviceRgb(200, 200, 200);
+            Color textColor = new DeviceRgb(44, 62, 80); 
+            Color successColor = new DeviceRgb(39, 174, 96); 
+
+     
             PdfFont baseFont = PdfFontFactory.CreateFont(StandardFontFamilies.HELVETICA);
 
-            // Encabezado del documento
-            Paragraph header = new Paragraph("ENTRADAS")
+
+            Paragraph header = new Paragraph("TICKETS")
                 .SetFont(baseFont)
                 .SetFontSize(26)
                 .SetTextAlignment(TextAlignment.CENTER)
@@ -195,7 +179,6 @@ namespace ProyectoFinal.Controllers
                 .SetMarginBottom(20);
             document.Add(header);
 
-            // Información del evento en una caja con borde
             Div eventInfoBox = new Div()
                 .SetBackgroundColor(new DeviceRgb(245, 245, 245))
                 .SetBorder(new SolidBorder(borderColor, 2))
@@ -213,20 +196,20 @@ namespace ProyectoFinal.Controllers
             Table eventTable = new Table(2).UseAllAvailableWidth();
             eventTable.SetMarginBottom(10);
 
-            // Fecha
-            Cell dateLabel = new Cell().Add(new Paragraph("Fecha:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
-            Cell dateValue = new Cell().Add(new Paragraph(evento.Date.ToString("dddd, dd 'de' MMMM 'de' yyyy", new System.Globalization.CultureInfo("es-ES"))).SetFont(baseFont));
+
+            Cell dateLabel = new Cell().Add(new Paragraph("Date:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+            Cell dateValue = new Cell().Add(new Paragraph(evento.Date.ToString("dddd, MMMM dd, yyyy", new System.Globalization.CultureInfo("en-US"))).SetFont(baseFont));
             eventTable.AddCell(dateLabel);
             eventTable.AddCell(dateValue);
 
-            // Hora
-            Cell timeLabel = new Cell().Add(new Paragraph("Hora:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+       
+            Cell timeLabel = new Cell().Add(new Paragraph("Time:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
             Cell timeValue = new Cell().Add(new Paragraph(evento.Time.ToString(@"hh\:mm")).SetFont(baseFont));
             eventTable.AddCell(timeLabel);
             eventTable.AddCell(timeValue);
 
-            // Ubicación
-            Cell locationLabel = new Cell().Add(new Paragraph("Ubicacion:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+     
+            Cell locationLabel = new Cell().Add(new Paragraph("Location:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
             Cell locationValue = new Cell().Add(new Paragraph(evento.Location).SetFont(baseFont));
             eventTable.AddCell(locationLabel);
             eventTable.AddCell(locationValue);
@@ -234,19 +217,19 @@ namespace ProyectoFinal.Controllers
             eventInfoBox.Add(eventTable);
             document.Add(eventInfoBox);
 
-            // Generar cada entrada
+
             int ticketNumber = 1;
             foreach (var ticket in tickets)
             {
-                // Caja para cada entrada con borde
+   
                 Div ticketBox = new Div()
                     .SetBorder(new SolidBorder(headerColor, 3))
                     .SetPadding(20)
                     .SetMarginBottom(25)
                     .SetBackgroundColor(new DeviceRgb(255, 255, 255));
 
-                // Título de la entrada
-                Paragraph ticketTitle = new Paragraph($"ENTRADA #{ticketNumber}")
+        
+                Paragraph ticketTitle = new Paragraph($"TICKET #{ticketNumber}")
                     .SetFont(baseFont)
                     .SetFontSize(20)
                     .SetFontColor(headerColor)
@@ -254,32 +237,25 @@ namespace ProyectoFinal.Controllers
                     .SetMarginBottom(15);
                 ticketBox.Add(ticketTitle);
 
-                // Tabla con información del ticket
                 Table ticketTable = new Table(2).UseAllAvailableWidth();
                 ticketTable.SetMarginBottom(15);
 
-                // Ticket ID
-                Cell idLabel = new Cell().Add(new Paragraph("Ticket ID:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
-                Cell idValue = new Cell().Add(new Paragraph($"#{ticket.TicketId}").SetFont(baseFont).SetFontSize(12));
-                ticketTable.AddCell(idLabel);
-                ticketTable.AddCell(idValue);
 
-                // Sector
                 Cell sectorLabel = new Cell().Add(new Paragraph("Sector:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
                 Cell sectorValue = new Cell().Add(new Paragraph(ticket.Sector?.Name ?? "N/A").SetFont(baseFont).SetFontSize(12));
                 ticketTable.AddCell(sectorLabel);
                 ticketTable.AddCell(sectorValue);
 
-                // Precio
-                Cell priceLabel = new Cell().Add(new Paragraph("Precio:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
-                string precioTexto = "$" + ticket.Price.ToString("F2");
-                Cell priceValue = new Cell().Add(new Paragraph(precioTexto).SetFont(baseFont).SetFontSize(16).SetFontColor(successColor));
+     
+                Cell priceLabel = new Cell().Add(new Paragraph("Price:").SetFont(baseFont).SetFontSize(12).SetFontColor(textColor));
+                string priceText = "$" + ticket.Price.ToString("F2");
+                Cell priceValue = new Cell().Add(new Paragraph(priceText).SetFont(baseFont).SetFontSize(16).SetFontColor(successColor));
                 ticketTable.AddCell(priceLabel);
                 ticketTable.AddCell(priceValue);
 
                 ticketBox.Add(ticketTable);
 
-                // Insertar imagen QR centrada
+
                 if (!string.IsNullOrEmpty(ticket.QrCode))
                 {
                     try
@@ -289,8 +265,7 @@ namespace ProyectoFinal.Controllers
                         
                         ImageData imageData = ImageDataFactory.Create(qrBytes);
                         Image qrImage = new Image(imageData);
-                        
-                        // Tamaño del QR más grande y centrado
+     
                         qrImage.SetWidth(150);
                         qrImage.SetHeight(150);
                         qrImage.SetHorizontalAlignment(HorizontalAlignment.CENTER);
@@ -299,8 +274,8 @@ namespace ProyectoFinal.Controllers
                         
                         ticketBox.Add(qrImage);
 
-                        // Texto debajo del QR
-                        Paragraph qrText = new Paragraph("Escanea este codigo QR para validar tu entrada")
+                
+                        Paragraph qrText = new Paragraph("Scan this QR code to validate your ticket")
                             .SetFont(baseFont)
                             .SetFontSize(9)
                             .SetFontColor(new DeviceRgb(150, 150, 150))
@@ -310,14 +285,13 @@ namespace ProyectoFinal.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Paragraph errorText = new Paragraph($"Error al generar QR: {ex.Message}")
+                        Paragraph errorText = new Paragraph($"Error generating QR: {ex.Message}")
                             .SetFontColor(ColorConstants.RED)
                             .SetFontSize(10);
                         ticketBox.Add(errorText);
                     }
                 }
 
-                // Línea decorativa al final
                 Div separator = new Div()
                     .SetHeight(2)
                     .SetBackgroundColor(headerColor)
@@ -328,8 +302,8 @@ namespace ProyectoFinal.Controllers
                 ticketNumber++;
             }
 
-            // Pie de página
-            Paragraph footer = new Paragraph("Gracias por tu compra. Presenta este documento al ingresar al evento.")
+       
+            Paragraph footer = new Paragraph("Thank you for your purchase. Present this document when entering the event.")
                 .SetFont(baseFont)
                 .SetFontSize(10)
                 .SetFontColor(new DeviceRgb(150, 150, 150))
@@ -343,20 +317,17 @@ namespace ProyectoFinal.Controllers
 
 
 
-        // =============================================
-        // ENVIAR EMAIL CON PDF ADJUNTO
-        // =============================================
-        public void EnviarTicketsPorEmail(string emailDestino, List<Ticket> tickets, Event evento)
+        public void SendTicketsByEmail(string destinationEmail, List<Ticket> tickets, Event evento)
         {
-            byte[] pdfBytes = GenerarPDFEntradas(evento, tickets);
+            byte[] pdfBytes = GenerateTicketsPDF(evento, tickets);
 
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress("andrescaleraa7@gmail.com");
-            mail.To.Add(emailDestino);
-            mail.Subject = "Tus Tickets - " + evento.Name;
-            mail.Body = "Gracias por tu compra. Tus entradas están adjuntas en formato PDF.";
+            mail.To.Add(destinationEmail);
+            mail.Subject = "Your Tickets - " + evento.Name;
+            mail.Body = "Thank you for your purchase. Your tickets are attached in PDF format.";
 
-            mail.Attachments.Add(new Attachment(new MemoryStream(pdfBytes), "Entradas.pdf"));
+            mail.Attachments.Add(new Attachment(new MemoryStream(pdfBytes), "Tickets.pdf"));
 
             using (SmtpClient client = new SmtpClient("smtp.gmail.com", 587))
             {

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RgdMaq3q0uz0YOQGwYZNNeSzFydWP06Mf9bN/O1EPyw=",
+  "Hash": "VSo+nXvWHNAT+JFMMKWmVgeLJ4lemfXElH2E8bz+uOE=",
   "Source": "ProyectoFinal",
   "BasePath": "_content/ProyectoFinal",
   "Mode": "Default",
@@ -224,6 +224,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\events\\4b6425af-d7f5-48b5-9964-9fae8c655f9e.jpg"
+    },
+    {
+      "Identity": "D:\\daer\\TicketHub\\wwwroot\\images\\events\\8ed42530-23e7-4ff6-9bc7-d2c5b2f243e6.jpg",
+      "SourceId": "ProyectoFinal",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\daer\\TicketHub\\wwwroot\\",
+      "BasePath": "_content/ProyectoFinal",
+      "RelativePath": "images/events/8ed42530-23e7-4ff6-9bc7-d2c5b2f243e6.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\events\\8ed42530-23e7-4ff6-9bc7-d2c5b2f243e6.jpg"
     },
     {
       "Identity": "D:\\daer\\TicketHub\\wwwroot\\images\\events\\af642077-b0de-409c-9c91-ca82533827a9.png",

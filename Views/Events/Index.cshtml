@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ProyectoFinal.Models.Event>
 @{
-    ViewData["Title"] = "Gestión de Eventos";
+    ViewData["Title"] = "Event Management";
     var totalEvents = Model.Count();
     var upcomingEvents = Model.Count(e => e.Date >= DateTime.Today);
 }
@@ -9,14 +9,14 @@
     <!-- Page Header -->
     <div class="page-header">
         <h1 class="page-title">
-            <i class="bi bi-calendar-event"></i> Gestión de Eventos
+            <i class="bi bi-calendar-event"></i> Event Management
         </h1>
         <div class="d-flex gap-2">
             <a asp-action="Reports" class="btn-admin btn-admin-info">
-                <i class="bi bi-bar-chart-fill"></i> Ver Reportes
+                <i class="bi bi-bar-chart-fill"></i> View Reports
             </a>
             <a asp-action="Create" class="btn-admin btn-admin-success">
-                <i class="bi bi-plus-lg"></i> Crear Nuevo Evento
+                <i class="bi bi-plus-lg"></i> Create New Event
             </a>
         </div>
     </div>
@@ -29,7 +29,7 @@
             </div>
             <div class="stat-content">
                 <h3>@totalEvents</h3>
-                <p>Total Eventos</p>
+                <p>Total Events</p>
             </div>
         </div>
         <div class="stat-card">
@@ -38,7 +38,7 @@
             </div>
             <div class="stat-content">
                 <h3>@upcomingEvents</h3>
-                <p>Próximos Eventos</p>
+                <p>Upcoming Events</p>
             </div>
         </div>
     </div>
@@ -61,7 +61,7 @@
                             <img src="https://via.placeholder.com/400x180/1a1a2e/ffffff?text=@item.Name" alt="@item.Name" />
                         }
                         <span class="event-admin-badge">
-                            @(isPast ? "Finalizado" : "Activo")
+                            @(isPast ? "Finished" : "Active")
                         </span>
                     </div>
                     
@@ -69,13 +69,13 @@
                         <h5 class="event-admin-title">@item.Name</h5>
                         
                         <div class="event-admin-info">
-                            <span><i class="bi bi-calendar3"></i> @item.Date.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("es-ES"))</span>
+                            <span><i class="bi bi-calendar3"></i> @item.Date.ToString("dd MMM yyyy", new System.Globalization.CultureInfo("en-US"))</span>
                             <span><i class="bi bi-clock"></i> @item.Time.ToString(@"hh\:mm") hrs</span>
                             <span><i class="bi bi-geo-alt"></i> @item.Location</span>
                         </div>
                         
                         <div class="event-admin-sectors">
-                            <h6><i class="bi bi-grid-3x3-gap"></i> Sectores</h6>
+                            <h6><i class="bi bi-grid-3x3-gap"></i> Sectors</h6>
                             @if (item.Sectors != null && item.Sectors.Any())
                             {
                                 <ul class="sector-list">
@@ -88,25 +88,25 @@
                                     }
                                     @if (item.Sectors.Count > 3)
                                     {
-                                        <li class="text-muted">+ @(item.Sectors.Count - 3) más...</li>
+                                        <li class="text-muted">+ @(item.Sectors.Count - 3) more...</li>
                                     }
                                 </ul>
                             }
                             else
                             {
-                                <span class="text-muted" style="font-size: 0.85rem;">Sin sectores configurados</span>
+                                <span class="text-muted" style="font-size: 0.85rem;">No sectors configured</span>
                             }
                         </div>
                         
                         <div class="event-admin-actions">
                             <a asp-action="Details" asp-route-id="@item.EventId" class="btn-admin btn-admin-info">
-                                <i class="bi bi-eye"></i> Ver
+                                <i class="bi bi-eye"></i> View
                             </a>
                             <a asp-action="Edit" asp-route-id="@item.EventId" class="btn-admin btn-admin-warning">
-                                <i class="bi bi-pencil"></i> Editar
+                                <i class="bi bi-pencil"></i> Edit
                             </a>
                             <a asp-action="Delete" asp-route-id="@item.EventId" class="btn-admin btn-admin-danger">
-                                <i class="bi bi-trash"></i> Eliminar
+                                <i class="bi bi-trash"></i> Delete
                             </a>
                         </div>
                     </div>
@@ -120,10 +120,10 @@
             <div class="data-card-body">
                 <div class="empty-state">
                     <i class="bi bi-calendar-x"></i>
-                    <h4>No hay eventos registrados</h4>
-                    <p>Comienza creando tu primer evento</p>
+                    <h4>No events registered</h4>
+                    <p>Start by creating your first event</p>
                     <a asp-action="Create" class="btn-admin btn-admin-success mt-3">
-                        <i class="bi bi-plus-lg"></i> Crear Evento
+                        <i class="bi bi-plus-lg"></i> Create Event
                     </a>
                 </div>
             </div>

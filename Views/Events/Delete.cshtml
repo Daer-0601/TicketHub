@@ -1,9 +1,9 @@
 ﻿@model ProyectoFinal.Models.Event
 @{
-    ViewData["Title"] = "Eliminar Evento";
+    ViewData["Title"] = "Delete Event";
 }
 
-<h1>Eliminar Evento</h1>
+<h1>Delete Event</h1>
 
 <div class="card mb-3">
     @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -13,32 +13,32 @@
     <div class="card-body">
         <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">
-            <strong>Fecha:</strong> @Model.Date.ToString("yyyy-MM-dd") <br />
-            <strong>Hora:</strong> @Model.Time.ToString(@"hh\:mm") <br />
-            <strong>Ubicación:</strong> @Model.Location
+            <strong>Date:</strong> @Model.Date.ToString("yyyy-MM-dd") <br />
+            <strong>Time:</strong> @Model.Time.ToString(@"hh\:mm") <br />
+            <strong>Location:</strong> @Model.Location
         </p>
         <p>
-            <strong>Sectores:</strong>
+            <strong>Sectors:</strong>
             @if (Model.Sectors != null && Model.Sectors.Any())
             {
                 <ul>
                     @foreach (var s in Model.Sectors)
                     {
-                        <li>@s.Name - $@s.Price - Capacidad: @s.Capacity</li>
+                        <li>@s.Name - $@s.Price - Capacity: @s.Capacity</li>
                     }
                 </ul>
             }
             else
             {
-                <span>No hay sectores</span>
+                <span>No sectors</span>
             }
         </p>
     </div>
 </div>
 
 <form asp-action="Delete" method="post"
-      onsubmit="return confirm('¿Estás seguro que deseas eliminar este evento?');">
+      onsubmit="return confirm('Are you sure you want to delete this event?');">
     <input type="hidden" asp-for="EventId" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
 </form>
